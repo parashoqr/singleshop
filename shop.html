@@ -32,13 +32,13 @@ fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03K
   let container = document.getElementById("products");
   data.forEach(product => {
     container.innerHTML += `
-      <div class="product">
-        <h2>${product.name}</h2>
-        <p><strong>Price:</strong> ₹${product.price}</p>
-        <p>${product.description}</p>
-      </div>
-    `;
-  });
+  <div class="product">
+    <img src="${product.image}" width="200"><br>
+    <h2>${product.name}</h2>
+    <p><strong>Price:</strong> ₹${product.price}</p>
+    <p>${product.description}</p>
+  </div>
+`;
 });
 </script>
 
