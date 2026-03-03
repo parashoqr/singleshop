@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Product</title>
+</head>
+<body>
+
+<h2>Add Product</h2>
+
+<form id="productForm">
+  <input type="text" name="name" placeholder="Product Name" required><br><br>
+  <textarea name="desc" placeholder="Description"></textarea><br><br>
+  <input type="text" name="category" placeholder="Category"><br><br>
+  <input type="number" name="price" placeholder="Price"><br><br>
+  <input type="text" name="image" placeholder="Image URL"><br><br>
+
+  <select name="featured">
+    <option value="no">Normal</option>
+    <option value="yes">Featured</option>
+  </select><br><br>
+
+  <button type="submit">Add Product</button>
+</form>
+
+<script>
+document.getElementById('productForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const data = {
+    name: this.name.value,
+    desc: this.desc.value,
+    category: this.category.value,
+    price: this.price.value,
+    image: this.image.value,
+    featured: this.featured.value
+  };
+
+  fetch("<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Product</title>
+</head>
+<body>
+
+<h2>Add Product</h2>
+
+<form id="productForm">
+  <input type="text" name="name" placeholder="Product Name" required><br><br>
+  <textarea name="desc" placeholder="Description"></textarea><br><br>
+  <input type="text" name="category" placeholder="Category"><br><br>
+  <input type="number" name="price" placeholder="Price"><br><br>
+  <input type="text" name="image" placeholder="Image URL"><br><br>
+
+  <select name="featured">
+    <option value="no">Normal</option>
+    <option value="yes">Featured</option>
+  </select><br><br>
+
+  <button type="submit">Add Product</button>
+</form>
+
+<script>
+document.getElementById('productForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const data = {
+    name: this.name.value,
+    desc: this.desc.value,
+    category: this.category.value,
+    price: this.price.value,
+    image: this.image.value,
+    featured: this.featured.value
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(response => {
+    alert(response);
+    this.reset();
+  })
+  .catch(err => alert("Error: " + err));
+});
+</script>
+
+</body>
+</html>", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(response => {
+    alert(response);
+    this.reset();
+  })
+  .catch(err => alert("Error: " + err));
+});
+</script>
+
+</body>
+</html>
