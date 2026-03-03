@@ -22,30 +22,71 @@
 </head>
 <body>
 
-<h1>My Products</h1>
+<h1>My Shop</h1>
+
+<select id="categoryFilter">
+  <option value="all">All Categories</option>
+</select>
+
+<br><br>
+
 <div id="products"></div>
 
 <script>
-fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec")
+const url = "PASTE_YOUR_LATEST_EXEC_URL_HERE";
+
+let allProducts = [];
+
+fetch(url)
 .then(response => response.json())
 .then(data => {
-  let container = document.getElementById("products");
-  container.innerHTML = ""; // clear old content
+  allProducts = data;
+  populateCategories(data);
+  displayProducts(data);
+})
+.catch(error => {
+  document.getElementById("products").innerHTML = "Error loading products";
+  console.log(error);
+});
 
-  data.forEach(product => {
+function populateCategories(products) {
+  const dropdown = document.getElementById("categoryFilter");
+  const categories = [...new Set(products.map(p => p.category))];
+
+  categories.forEach(cat => {
+    if (cat) {
+      dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
+    }
+  });
+}
+
+function displayProducts(products) {
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  products.forEach(product => {
     container.innerHTML += `
       <div class="product">
         <img src="${product.image}" width="200"><br>
         <h2>${product.name}</h2>
         <p><strong>Price:</strong> ₹${product.price}</p>
         <p>${product.description}</p>
+        <p><strong>Category:</strong> ${product.category}</p>
       </div>
+      <hr>
     `;
   });
-})
-.catch(error => {
-  document.getElementById("products").innerHTML = "Error loading products";
-  console.log(error);
+}
+
+document.getElementById("categoryFilter").addEventListener("change", function() {
+  const selected = this.value;
+
+  if (selected === "all") {
+    displayProducts(allProducts);
+  } else {
+    const filtered = allProducts.filter(p => p.category === selected);
+    displayProducts(filtered);
+  }
 });
 </script>
 
