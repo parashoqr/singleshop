@@ -27,18 +27,25 @@
 
 <script>
 fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec")
-.then(res => res.json())
+.then(response => response.json())
 .then(data => {
   let container = document.getElementById("products");
+  container.innerHTML = ""; // clear old content
+
   data.forEach(product => {
     container.innerHTML += `
-  <div class="product">
-    <img src="${product.image}" width="200"><br>
-    <h2>${product.name}</h2>
-    <p><strong>Price:</strong> ₹${product.price}</p>
-    <p>${product.description}</p>
-  </div>
-`;
+      <div class="product">
+        <img src="${product.image}" width="200"><br>
+        <h2>${product.name}</h2>
+        <p><strong>Price:</strong> ₹${product.price}</p>
+        <p>${product.description}</p>
+      </div>
+    `;
+  });
+})
+.catch(error => {
+  document.getElementById("products").innerHTML = "Error loading products";
+  console.log(error);
 });
 </script>
 
