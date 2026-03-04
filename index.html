@@ -1,55 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Add Product</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Dashboard</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:0;}
+  .container { max-width:900px; margin:auto; padding:20px;}
+  h1,h2 { text-align:center; color:#333;}
+  form { display:flex; flex-direction:column; gap:12px; background:#f0f8ff; padding:20px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+  input, textarea { padding:10px; border-radius:8px; border:1px solid #ccc; width:100%;}
+  button { padding:12px; border-radius:8px; border:none; font-weight:bold; cursor:pointer;}
+  .btn-add { background:#007bff; color:white;}
+  .btn-delete { background:#ff4d4d; color:white;}
+  .product-card { border:1px solid #ccc; padding:8px; margin:5px; display:flex; justify-content:space-between; align-items:center; border-radius:5px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.05);}
+  #shopToggleContainer, #analyticsContainer { display:none; margin-bottom:20px; text-align:center;}
+</style>
 </head>
 <body>
+<div class="container">
 
-<h2>Add Product</h2>
+  <h1>Shop Dashboard</h1>
 
-<form id="productForm">
-  <input type="text" name="name" placeholder="Product Name" required><br><br>
-  <input type="text" name="description" placeholder="Description" required><br><br>
-  <input type="text" name="category" placeholder="Category"><br><br>
-  <input type="number" name="price" placeholder="Price" required><br><br>
-  <input type="text" name="image" placeholder="Image URL"><br><br>
+  <!-- Admin Only Controls -->
+  <div id="shopToggleContainer">
+    <label style="font-weight:bold; font-size:16px;">Shop Status: </label>
+    <button id="toggleShop" style="padding:6px 12px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;"></button>
+  </div>
 
-  <button type="submit">Add Product</button>
-</form>
+  <div id="analyticsContainer">
+    <h2>Analytics</h2>
+    <p>Visits: <span id="visitCount">0</span></p>
+    <p>Total Products: <span id="totalProducts">0</span></p>
+  </div>
 
-  <h2 style="text-align:center; margin-top:30px;">Products List</h2>
-<div id="adminProducts"></div>
+  <!-- Add Product Form (visible to both admin and shopkeeper) -->
+  <form id="addProductForm">
+    <input name="name" placeholder="Product Name" required>
+    <textarea name="description" placeholder="Description" required></textarea>
+    <input name="category" placeholder="Category" required>
+    <input name="price" placeholder="Price" type="number" required>
+    <input name="image" placeholder="Image URL" required>
+    <button type="submit" class="btn-add">Add Product</button>
+  </form>
+
+  <!-- Product List with Delete buttons -->
+  <h2 style="margin-top:30px;">Products List</h2>
+  <div id="adminProducts"></div>
+
+</div>
+
 <script>
+const urlParams = new URLSearchParams(window.location.search);
+const isAdmin = urlParams.get('admin') === "true"; // show admin controls only if admin=true
+
+// Show/hide admin-only elements
+document.getElementById("shopToggleContainer").style.display = isAdmin ? "block" : "none";
+document.getElementById("analyticsContainer").style.display = isAdmin ? "block" : "none";
+
+// Add Product
+document.getElementById("addProductForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+  
+  fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec", { method:"POST", body: JSON.stringify(data) })
+    .then(res => res.text())
+    .then(resp => { alert(resp); this.reset(); fetchAdminProducts(); })
+    .catch(err => alert("Error: "+err));
+});
+
+// Fetch Products and display with Delete button
 function fetchAdminProducts(){
   fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec")
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById("adminProducts");
-    container.innerHTML = "";
-    data.forEach((p, index) => {
-      container.innerHTML += `
-        <div style="border:1px solid #ccc; padding:8px; margin:5px; border-radius:5px; display:flex; justify-content:space-between; align-items:center; background:#f9f9f9;">
-          <span>${p.name} - ₹${p.price} - ${p.category}</span>
-          <button onclick="deleteProduct(${index+2})" style="padding:5px 10px; background:#ff4d4d; color:white; border:none; border-radius:4px; cursor:pointer;">Delete</button>
-        </div>
-      `;
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("adminProducts");
+      container.innerHTML = "";
+      const products = data.products;
+      document.getElementById("totalProducts").textContent = products.length;
+
+      products.forEach((p,index)=>{
+        container.innerHTML += `
+          <div class="product-card">
+            <div>
+              <strong>${p.name}</strong> - ₹${p.price} - ${p.category}<br>
+              <img src="${p.image}" style="width:80px; margin-top:5px;">
+            </div>
+            <button class="btn-delete" onclick="deleteProduct(${index+2})">Delete</button>
+          </div>
+        `;
+      });
     });
-  });
 }
 
+// Delete Product
 function deleteProduct(row){
-  fetch(`https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec?row=${row}`, { method: "DELETE" })
-  .then(res => res.text())
-  .then(resp => {
-    alert(resp);
-    fetchAdminProducts();
-  })
-  .catch(err => console.log(err));
+  fetch(`https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec?row=${row}`, { method:"DELETE" })
+    .then(res=>res.text())
+    .then(resp=>{ alert(resp); fetchAdminProducts(); })
+    .catch(err=>alert("Error: "+err));
 }
 
-// Initial load
-fetchAdminProducts();
-</script>
+// Admin: Shop ON/OFF Toggle
+if(isAdmin){
+  function fetchShopStatus(){
+    fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec")
+      .then(res=>res.json())
+      .then(data=>{
+        const status = data.shopStatus || "on";
+        const btn = document.getElementById("toggleShop");
+        btn.textContent = status.toUpperCase();
+        btn.style.background = status==="on"?"#28a745":"#ff4d4d";
+        btn.style.color = "white";
+        btn.onclick = ()=>toggleShop(status==="on"?"off":"on");
+        document.getElementById("visitCount").textContent = data.visits || 0;
+      });
+  }
 
+  function toggleShop(newStatus){
+    fetch(`https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec?shopStatus=${newStatus}`, { method:"POST" })
+      .then(res=>res.text())
+      .then(()=>fetchShopStatus());
+  }
+
+  fetchShopStatus();
+}
+
+// Initial load of products
+fetchAdminProducts();
+
+</script>
 </body>
 </html>
