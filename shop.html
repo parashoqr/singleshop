@@ -1,92 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Shop</title>
+  <meta charset="UTF-8">
+  <title>My Premium Shop</title>
   <style>
     body {
-      font-family: Arial;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-    .product {
-      background: white;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    h2 {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f4f8;
       margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #222;
+      padding: 20px 0;
+      font-size: 2.5em;
+    }
+
+    #categoryFilter {
+      display: block;
+      margin: 0 auto 20px auto;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      background: white;
+      cursor: pointer;
+    }
+
+    #products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .product-card {
+      background: linear-gradient(135deg, #ffffff, #e6f0ff);
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    }
+
+    .product-card img {
+      width: 180px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      transition: transform 0.3s;
+    }
+
+    .product-card img:hover {
+      transform: scale(1.05);
+    }
+
+    .product-card h2 {
+      margin: 5px 0;
+      font-size: 1.4em;
+      color: #333;
+    }
+
+    .product-card p {
+      margin: 3px 0;
+      color: #555;
+    }
+
+    .product-card .price {
+      font-weight: bold;
+      color: #ff4d6d;
+      font-size: 1.2em;
+    }
+
+    .product-card .category {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 3px 10px;
+      background: #007bff;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.85em;
+    }
+
+    @media(max-width: 600px){
+      #products {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
+      .product-card img {
+        width: 140px;
+      }
     }
   </style>
 </head>
 <body>
 
-<h1>My Shop</h1>
+<h1>My Premium Shop</h1>
 
 <select id="categoryFilter">
   <option value="all">All Categories</option>
 </select>
 
-<br><br>
-
 <div id="products"></div>
 
 <script>
-const url = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec";
-
+const url = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // Apps Script /exec
 let allProducts = [];
 
 fetch(url)
-.then(response => response.json())
+.then(res => res.json())
 .then(data => {
   allProducts = data;
   populateCategories(data);
   displayProducts(data);
 })
-.catch(error => {
-  document.getElementById("products").innerHTML = "Error loading products";
-  console.log(error);
-});
+.catch(err => console.log(err));
 
-function populateCategories(products) {
+function populateCategories(products){
   const dropdown = document.getElementById("categoryFilter");
   const categories = [...new Set(products.map(p => p.category))];
-
   categories.forEach(cat => {
-    if (cat) {
-      dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
-    }
+    if(cat) dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
   });
 }
 
-function displayProducts(products) {
+function displayProducts(products){
   const container = document.getElementById("products");
   container.innerHTML = "";
-
   products.forEach(product => {
     container.innerHTML += `
-      <div class="product">
-        <img src="${product.image}" width="200"><br>
+      <div class="product-card">
+        <img src="${product.image}" alt="${product.name}">
         <h2>${product.name}</h2>
-        <p><strong>Price:</strong> ₹${product.price}</p>
+        <p class="price">₹${product.price}</p>
         <p>${product.description}</p>
-        <p><strong>Category:</strong> ${product.category}</p>
+        <span class="category">${product.category}</span>
       </div>
-      <hr>
     `;
   });
 }
 
-document.getElementById("categoryFilter").addEventListener("change", function() {
+document.getElementById("categoryFilter").addEventListener("change", function(){
   const selected = this.value;
-
-  if (selected === "all") {
-    displayProducts(allProducts);
-  } else {
-    const filtered = allProducts.filter(p => p.category === selected);
-    displayProducts(filtered);
-  }
+  if(selected === "all") displayProducts(allProducts);
+  else displayProducts(allProducts.filter(p => p.category === selected));
 });
 </script>
 
