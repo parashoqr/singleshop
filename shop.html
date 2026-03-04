@@ -109,40 +109,47 @@
   <option value="all">All Categories</option>
 </select>
 
-<div id="products"></div>
+<div id="shopContainer"></div>
 
 <script>
-const EXEC_URL = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // same Apps Script /exec
+const EXEC_URL = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // your Apps Script /exec URL
 
-// Load products for customers
 function fetchProducts(){
   fetch(EXEC_URL)
     .then(res => res.json())
     .then(data => {
-      if(data.shopStatus !== "on"){
-        document.getElementById("shopContainer").innerHTML = "<h2>Shop is currently closed</h2>";
-        return;
-      }
-
       const container = document.getElementById("shopContainer");
       container.innerHTML = "";
 
-      data.products.forEach(p => {
+      if(data.shopStatus !== "on"){
+        container.innerHTML = "<h2>Shop is currently closed</h2>";
+        return;
+      }
+
+      if(data.products.length === 0){
+        container.innerHTML = "<h2>No products available</h2>";
+        return;
+      }
+
+      data.products.forEach(p=>{
         container.innerHTML += `
-          <div class="product-card">
-            <img src="${p.image}" style="width:120px; height:auto; border-radius:5px;">
-            <h3>${p.name}</h3>
-            <p>Price: ₹${p.price}</p>
-            <p>${p.description}</p>
+          <div style="border:1px solid #ccc; padding:10px; margin:5px; border-radius:5px;">
+            <img src="${p.image}" style="width:150px; height:auto;"><br>
+            <strong>${p.name}</strong> - ₹${p.price}<br>
+            ${p.description}<br>
             <small>Category: ${p.category}</small>
           </div>`;
       });
     })
-    .catch(err => console.error("Error fetching products:", err));
+    .catch(err => {
+      console.error("Error fetching products:", err);
+      document.getElementById("shopContainer").innerHTML = "<h2>Error loading products</h2>";
+    });
 }
 
-// On page load
+// Load on page open
 fetchProducts();
 </script>
+  
 </body>
 </html>
