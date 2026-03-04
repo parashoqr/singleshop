@@ -52,26 +52,23 @@ async function fetchProducts(){
 document.getElementById("addProductForm").addEventListener("submit", async function(e){
   e.preventDefault();
   const data = Object.fromEntries(new FormData(this).entries());
-  try{
-    const res = await fetch(EXEC_URL,{
-      method:"POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify(data)
-    });
-    alert(await res.text());
-    this.reset();
-    fetchProducts();
-  }catch(err){ alert("Error adding product: "+err); }
+  
+  const res = await fetch(EXEC_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+  
+  alert(await res.text());
+  this.reset();
+  fetchProducts();
 });
 
 // Delete product
 async function deleteProduct(row){
-  if(!confirm("Delete this product?")) return;
-  try{
-    const res = await fetch(EXEC_URL+"?row="+row,{ method:"DELETE" });
-    alert(await res.text());
-    fetchProducts();
-  }catch(err){ alert("Error deleting product: "+err); }
+  const res = await fetch(EXEC_URL + "?row=" + row, { method: "DELETE" });
+  alert(await res.text());
+  fetchProducts();
 }
 
 // Initial load
