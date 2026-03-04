@@ -64,7 +64,7 @@ document.getElementById("addProductForm").addEventListener("submit", function(e)
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
   
-  fetch("PASTE_YOUR_EXEC_URL_HERE", { method:"POST", body: JSON.stringify(data) })
+  fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec", { method:"POST", body: JSON.stringify(data) })
     .then(res => res.text())
     .then(resp => { alert(resp); this.reset(); fetchAdminProducts(); })
     .catch(err => alert("Error: "+err));
@@ -72,7 +72,7 @@ document.getElementById("addProductForm").addEventListener("submit", function(e)
 
 // Fetch Products and display with Delete button
 function fetchAdminProducts(){
-  fetch("PASTE_YOUR_EXEC_URL_HERE")
+  fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec")
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById("adminProducts");
@@ -96,7 +96,7 @@ function fetchAdminProducts(){
 
 // Delete Product
 function deleteProduct(row){
-  fetch(`PASTE_YOUR_EXEC_URL_HERE?row=${row}`, { method:"DELETE" })
+  fetch(`https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec?row=${row}`, { method:"DELETE" })
     .then(res=>res.text())
     .then(resp=>{ alert(resp); fetchAdminProducts(); })
     .catch(err=>alert("Error: "+err));
@@ -105,7 +105,7 @@ function deleteProduct(row){
 // Admin: Shop ON/OFF Toggle
 if(isAdmin){
   function fetchShopStatus(){
-    fetch("PASTE_YOUR_EXEC_URL_HERE")
+    fetch("https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec")
       .then(res=>res.json())
       .then(data=>{
         const status = data.shopStatus || "on";
@@ -119,7 +119,7 @@ if(isAdmin){
   }
 
   function toggleShop(newStatus){
-    fetch(`PASTE_YOUR_EXEC_URL_HERE?shopStatus=${newStatus}`, { method:"POST" })
+    fetch(`https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec?shopStatus=${newStatus}`, { method:"POST" })
       .then(res=>res.text())
       .then(()=>fetchShopStatus());
   }
