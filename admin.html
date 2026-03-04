@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<style>
+body { font-family: Arial; margin: 20px; background: #f9f9f9; }
+h1, h2 { color: #333; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+th { background: #eee; }
+button { padding: 5px 10px; margin: 2px; cursor: pointer; }
+form { background: #fff; padding: 15px; border-radius: 5px; max-width: 500px; margin-bottom: 20px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+input, textarea { width: 100%; padding: 8px; margin: 5px 0; box-sizing: border-box; }
+.toggle-btn { padding: 8px 15px; font-weight: bold; }
+img { max-width: 60px; }
+</style>
+</head>
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<!-- Shop Toggle -->
+<label>
+  <input type="checkbox" id="shopToggle"> Shop ON/OFF
+</label>
+<span id="toggleStatus"></span>
+
+<hr>
+
+<h2>Add Product</h2>
+<form id="addProductForm">
+  <input type="text" name="name" placeholder="Product Name" required>
+  <input type="number" name="price" placeholder="Price" required>
+  <textarea name="description" placeholder="Description" required></textarea>
+  <input type="text" name="category" placeholder="Category" required>
+  <input type="text" name="image" placeholder="Image URL">
+  <button type="submit">Add Product</button>
+</form>
+
+<h2>All Products</h2>
+<table id="productsTable">
+<thead>
+<tr>
+<th>Name</th>
+<th>Price</th>
+<th>Description</th>
+<th>Category</th>
+<th>Image</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<script>
+const EXEC_URL = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // Apps Script /exec URL
+
+// Fetch products + shop status
+async function fetchProducts(){
+  try{
+    const res = await fetch(EXEC_URL);
+    const data = await res.json();
+    
+    // Toggle
+    const toggle = document.getElementById("shopToggle");
+    toggle.checked = data.shopStatus === "on";
+    document.getElementById("toggleStatus").innerText = data.shopStatus.toUpperCase();
+    
+    // Products table
+    const tbody = document.querySelector("#productsTable tbody");
+    tbody.innerHTML = "";
+    data.products.forEach(p=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${p.name}</td>
+        <td>${p.price}</td>
+        <td>${p.description}</td>
+        <td>${p.category}</td>
+        <td>${p.image ? '<img src="'+p.image+'">' : 'No Image'}</td>
+        <td>
+          <button onclick="deleteProduct(${p.rowIndex})">Delete</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+  }catch(err){
+    alert("Error fetching products: " + err);
+  }
+}
+
+// Add product
+document.getElementById("addProductForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(this).entries());
+  try{
+    const res = await fetch(EXEC_URL, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(data)
+    });
+    alert(await res.text());
+    this.reset();
+    fetchProducts();
+  }catch(err){ alert("Error adding product: " + err); }
+});
+
+// Delete product
+async function deleteProduct(row){
+  if(!confirm("Delete this product?")) return;
+  try{
+    const res = await fetch(EXEC_URL + "?row=" + row, { method:"DELETE" });
+    alert(await res.text());
+    fetchProducts();
+  }catch(err){ alert("Error deleting product: " + err); }
+}
+
+// Toggle shop ON/OFF
+document.getElementById("shopToggle").addEventListener("change", async function(){
+  const status = this.checked ? "on" : "off";
+  try{
+    const res = await fetch(EXEC_URL + "?shopStatus=" + status, { method:"POST" });
+    alert(await res.text());
+    fetchProducts();
+  }catch(err){ alert("Error toggling shop: " + err); }
+});
+
+// Initial load
+fetchProducts();
+</script>
+
+</body>
+</html>
