@@ -3,46 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shop Dashboard & Storefront</title>
+<title>Shop Dashboard</title>
 <style>
-body { font-family: Arial,sans-serif; background:#f0f2f5; margin:0; padding:0;}
-.container { max-width:1000px; margin:auto; padding:20px;}
-h1,h2 { text-align:center; color:#333; }
-form { display:flex; flex-direction:column; gap:12px; background:#e6f2ff; padding:20px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1);}
-input, textarea { padding:10px; border-radius:8px; border:1px solid #ccc; width:100%;}
-button { padding:12px; border-radius:8px; border:none; font-weight:bold; cursor:pointer; transition:0.2s;}
-.btn-add { background:#007bff; color:white;}
-.btn-add:hover { background:#0056b3;}
-.btn-delete { background:#ff4d4d; color:white; position:absolute; top:10px; right:10px; font-size:12px;}
-.product-card { background:#fff; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); padding:15px; text-align:center; transition: transform 0.2s; position:relative;}
-.product-card:hover { transform: scale(1.03);}
-.product-card img { width:100%; height:150px; object-fit:cover; border-radius:8px;}
-.product-card h3 { margin:10px 0 5px 0; font-size:18px; color:#222;}
-.product-card p { margin:5px 0; color:#555; }
-.product-card small { color:#777; }
-.product-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:15px; margin-top:15px;}
-#shopToggleContainer,#analyticsContainer { display:none; margin-bottom:20px; text-align:center;}
-#filterContainer { text-align:center; margin-bottom:20px;}
-select { padding:8px 12px; border-radius:6px; border:1px solid #ccc; font-size:16px;}
+body{font-family:sans-serif;background:#f0f2f5;margin:0;padding:0;}
+.container{max-width:1000px;margin:auto;padding:20px;}
+form{display:flex;flex-direction:column;gap:12px;background:#e6f2ff;padding:20px;border-radius:10px;}
+input,textarea{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;}
+button{padding:12px;border-radius:8px;border:none;font-weight:bold;cursor:pointer;}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:15px;margin-top:15px;}
+.product-card{background:#fff;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);padding:15px;text-align:center;position:relative;}
+.product-card img{width:100%;height:150px;object-fit:cover;border-radius:8px;}
+.btn-delete{background:#ff4d4d;color:white;position:absolute;top:10px;right:10px;font-size:12px;}
 </style>
 </head>
 <body>
-
 <div class="container">
-<h1>Shop Dashboard & Storefront</h1>
+<h1>Shop Dashboard</h1>
 
-<!-- Admin Controls -->
-<div id="shopToggleContainer">
-<label style="font-weight:bold; font-size:16px;">Shop Status: </label>
+<div id="shopToggleContainer" style="display:none;">
+<label>Shop Status:</label>
 <button id="toggleShop"></button>
 </div>
 
-<div id="analyticsContainer">
-<h2>Analytics</h2>
-<p>Total Products: <span id="totalProducts">0</span></p>
-</div>
-
-<!-- Shopkeeper Form -->
 <form id="addProductForm">
 <input name="name" placeholder="Product Name" required>
 <input name="price" placeholder="Price" type="number" required>
@@ -50,29 +32,23 @@ select { padding:8px 12px; border-radius:6px; border:1px solid #ccc; font-size:1
 <input name="category" placeholder="Category" required>
 <label>Choose Product Image:</label>
 <input type="file" id="imageFile" accept="image/*" required>
-<label><input type="checkbox" id="aiEnhance"> Generate AI Enhanced Image</label>
-<button type="submit" class="btn-add">Add Product</button>
+<button type="submit">Add Product</button>
 </form>
 
-<!-- Customer Category Filter -->
-<div id="filterContainer">
-<label for="categoryFilter">Filter by Category:</label>
-<select id="categoryFilter"><option value="all">All</option></select>
-</div>
+<select id="categoryFilter">
+<option value="all">All</option>
+</select>
 
-<!-- Products Display -->
 <div class="product-grid" id="shopContainer"></div>
 </div>
 
 <script>
+const EXEC_URL = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec";
 const urlParams = new URLSearchParams(window.location.search);
-const isAdmin = urlParams.get('admin') === "true"; 
-const EXEC_URL = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // Apps Script /exec URL
+const isAdmin = urlParams.get("admin")==="true";
 let allProducts = [];
 
-// Show admin elements
-document.getElementById("shopToggleContainer").style.display = isAdmin ? "block":"none";
-document.getElementById("analyticsContainer").style.display = isAdmin ? "block":"none";
+document.getElementById("shopToggleContainer").style.display = isAdmin?"block":"none";
 
 // Fetch products
 async function fetchProducts(){
@@ -80,103 +56,84 @@ async function fetchProducts(){
   const data = await res.json();
   allProducts = data.products;
 
+  // Update toggle
   if(isAdmin){
-    const statusBtn = document.getElementById("toggleShop");
-    statusBtn.textContent = data.shopStatus.toUpperCase();
-    statusBtn.style.background = data.shopStatus==="on"?"#28a745":"#ff4d4d";
-    statusBtn.style.color="white";
-    statusBtn.onclick = ()=>toggleShop(data.shopStatus==="on"?"off":"on");
+    const btn = document.getElementById("toggleShop");
+    btn.textContent = data.shopStatus.toUpperCase();
+    btn.style.background = data.shopStatus==="on"?"#28a745":"#ff4d4d";
+    btn.style.color="white";
+    btn.onclick = ()=>toggleShop(data.shopStatus==="on"?"off":"on");
   }
-  document.getElementById("totalProducts").textContent = allProducts.length;
+
   populateFilter(allProducts);
   displayProducts(allProducts, data.shopStatus);
 }
 
-// Populate filter dropdown
 function populateFilter(products){
   const select = document.getElementById("categoryFilter");
-  const categories = [...new Set(products.map(p=>p.category))];
-  select.innerHTML = '<option value="all">All</option>';
-  categories.forEach(c=>select.innerHTML+=`<option value="${c}">${c}</option>`);
+  const cats = [...new Set(products.map(p=>p.category))];
+  select.innerHTML='<option value="all">All</option>';
+  cats.forEach(c=>select.innerHTML+=`<option value="${c}">${c}</option>`);
 }
 
-// Display products
 function displayProducts(products, shopStatus){
   const container = document.getElementById("shopContainer");
-  container.innerHTML = "";
-  if(shopStatus!=="on"){ container.innerHTML="<h2>Shop is currently closed</h2>"; return;}
-  const filteredCat = document.getElementById("categoryFilter").value;
-  const display = filteredCat==="all"?products:products.filter(p=>p.category===filteredCat);
-  if(display.length===0){ container.innerHTML="<h2>No products available</h2>"; return;}
-  display.forEach(p=>{
-    container.innerHTML += `
-      <div class="product-card">
-        <img src="${p.image}" alt="${p.name}">
-        <h3>${p.name}</h3>
-        <p>₹${p.price}</p>
-        <p>${p.description}</p>
-        <small>${p.category}</small>
-        ${isAdmin?`<button class="btn-delete" onclick="deleteProduct(${p.rowIndex})">Delete</button>`:""}
-      </div>`;
+  container.innerHTML="";
+  if(shopStatus!=="on"){ container.innerHTML="<h2>Shop is closed</h2>"; return;}
+  const filter = document.getElementById("categoryFilter").value;
+  const filtered = filter==="all"?products:products.filter(p=>p.category===filter);
+  filtered.forEach(p=>{
+    const card = document.createElement("div");
+    card.className="product-card";
+    card.innerHTML=`
+      <img src="${p.image}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>₹${p.price}</p>
+      <p>${p.description}</p>
+      <small>${p.category}</small>
+    `;
+    if(isAdmin){
+      const btn = document.createElement("button");
+      btn.className="btn-delete";
+      btn.textContent="Delete";
+      btn.onclick = ()=>deleteProduct(p.rowIndex);
+      card.appendChild(btn);
+    }
+    container.appendChild(card);
   });
 }
 
-// Filter change
 document.getElementById("categoryFilter").addEventListener("change",()=>displayProducts(allProducts,"on"));
 
-// Upload & Add product
+// Add product
 document.getElementById("addProductForm").addEventListener("submit", async function(e){
   e.preventDefault();
   const file = document.getElementById("imageFile").files[0];
   if(!file){ alert("Select an image!"); return; }
-
   const formData = new FormData();
   formData.append("myFileBlob", file);
-  // Upload to Apps Script
-  let imageUrl = await fetch(EXEC_URL, { method:"POST", body:formData }).then(r=>r.text());
 
-  // Optional AI enhancement
-  if(document.getElementById("aiEnhance").checked){
-    imageUrl = await fetchAIImage(imageUrl); // function sends to Gemini API, returns public URL
-  }
-
-  // Add product info to sheet
+  const imageUrl = await fetch(EXEC_URL,{method:"POST",body:formData}).then(r=>r.text());
   const data = {
-    name: this.name.value,
-    price: this.price.value,
-    description: this.description.value,
-    category: this.category.value,
-    image: imageUrl
+    name:this.name.value,
+    price:this.price.value,
+    description:this.description.value,
+    category:this.category.value,
+    image:imageUrl
   };
-  await fetch(EXEC_URL, { method:"POST", body:JSON.stringify(data) });
-  alert("Product added!");
+  await fetch(EXEC_URL,{method:"POST",body:JSON.stringify(data)});
   this.reset();
   fetchProducts();
 });
 
 // Delete product
 function deleteProduct(row){
-  fetch(`${EXEC_URL}?row=${row}`,{method:"DELETE"})
-    .then(res=>res.text())
-    .then(resp=>{ alert(resp); fetchProducts(); })
-    .catch(err=>alert("Error: "+err));
+  fetch(`${EXEC_URL}?row=${row}`,{method:"DELETE"}).then(r=>r.text()).then(()=>fetchProducts());
 }
 
 // Toggle shop
-function toggleShop(newStatus){
-  fetch(`${EXEC_URL}?shopStatus=${newStatus}`,{method:"POST"})
-    .then(res=>res.text())
-    .then(()=>fetchProducts());
-}
-
-// AI Image Generation (placeholder)
-async function fetchAIImage(publicUrl){
-  const prompt = "Stylized product image for premium storefront";
-  // Replace with real Gemini API call
-  // const res = await fetch(GEMINI_ENDPOINT,{method:"POST", headers:{Authorization:"Bearer KEY"}, body:JSON.stringify({imageUrl:publicUrl, prompt})});
-  // const data = await res.json(); return data.publicUrl;
-  console.log("AI enhancement for:", publicUrl);
-  return publicUrl; // currently returns same URL, integrate Gemini API here
+function toggleShop(status){
+  fetch(`${EXEC_URL}?shopStatus=${status}`,{method:"POST"}).then(()=>fetchProducts());
 }
 
 // Initial load
