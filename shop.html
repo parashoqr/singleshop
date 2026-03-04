@@ -1,155 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Premium Shop</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f0f4f8;
-      margin: 0;
-      padding: 0;
-    }
-
-    h1 {
-      text-align: center;
-      color: #222;
-      padding: 20px 0;
-      font-size: 2.5em;
-    }
-
-    #categoryFilter {
-      display: block;
-      margin: 0 auto 20px auto;
-      padding: 10px 15px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      outline: none;
-      background: white;
-      cursor: pointer;
-    }
-
-    #products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .product-card {
-      background: linear-gradient(135deg, #ffffff, #e6f0ff);
-      border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      padding: 15px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.2);
-    }
-
-    .product-card img {
-      width: 180px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      transition: transform 0.3s;
-    }
-
-    .product-card img:hover {
-      transform: scale(1.05);
-    }
-
-    .product-card h2 {
-      margin: 5px 0;
-      font-size: 1.4em;
-      color: #333;
-    }
-
-    .product-card p {
-      margin: 3px 0;
-      color: #555;
-    }
-
-    .product-card .price {
-      font-weight: bold;
-      color: #ff4d6d;
-      font-size: 1.2em;
-    }
-
-    .product-card .category {
-      display: inline-block;
-      margin-top: 5px;
-      padding: 3px 10px;
-      background: #007bff;
-      color: white;
-      border-radius: 20px;
-      font-size: 0.85em;
-    }
-
-    @media(max-width: 600px){
-      #products {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      }
-      .product-card img {
-        width: 140px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Front</title>
+<style>
+body { font-family: Arial, sans-serif; background:#f0f2f5; margin:0; padding:0;}
+.container { max-width:1000px; margin:auto; padding:20px;}
+h1 { text-align:center; color:#333;}
+#filterContainer { text-align:center; margin-bottom:20px;}
+select { padding:8px 12px; border-radius:6px; border:1px solid #ccc; font-size:16px;}
+.product-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:15px; }
+.product-card { background:#fff; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); padding:15px; text-align:center; transition: transform 0.2s; }
+.product-card:hover { transform: scale(1.03); }
+.product-card img { width:100%; height:150px; object-fit:cover; border-radius:8px; }
+.product-card h3 { margin:10px 0 5px 0; font-size:18px; color:#222; }
+.product-card p { margin:5px 0; color:#555; }
+.product-card small { color:#777; }
+</style>
 </head>
 <body>
 
-<h1>My Premium Shop</h1>
+<div class="container">
+<h1>Our Products</h1>
 
-<select id="categoryFilter">
-  <option value="all">All Categories</option>
-</select>
+<div id="filterContainer">
+<label for="categoryFilter">Filter by Category:</label>
+<select id="categoryFilter"><option value="all">All</option></select>
+</div>
 
-<div id="shopContainer"></div>
+<div class="product-grid" id="shopContainer"></div>
+</div>
 
 <script>
-const EXEC_URL = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // your Apps Script /exec URL
+const EXEC_URL = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // Apps Script /exec URL
+let allProducts = [];
 
-function fetchProducts(){
-  fetch(EXEC_URL)
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById("shopContainer");
-      container.innerHTML = "";
+async function fetchProducts(){
+  const res = await fetch(EXEC_URL);
+  const data = await res.json();
+  allProducts = data.products;
 
-      if(data.shopStatus !== "on"){
-        container.innerHTML = "<h2>Shop is currently closed</h2>";
-        return;
-      }
+  if(data.shopStatus!=="on"){
+    document.getElementById("shopContainer").innerHTML="<h2>Shop is currently closed</h2>";
+    return;
+  }
 
-      if(data.products.length === 0){
-        container.innerHTML = "<h2>No products available</h2>";
-        return;
-      }
-
-      data.products.forEach(p=>{
-        container.innerHTML += `
-          <div style="border:1px solid #ccc; padding:10px; margin:5px; border-radius:5px;">
-            <img src="${p.image}" style="width:150px; height:auto;"><br>
-            <strong>${p.name}</strong> - ₹${p.price}<br>
-            ${p.description}<br>
-            <small>Category: ${p.category}</small>
-          </div>`;
-      });
-    })
-    .catch(err => {
-      console.error("Error fetching products:", err);
-      document.getElementById("shopContainer").innerHTML = "<h2>Error loading products</h2>";
-    });
+  populateFilter(allProducts);
+  displayProducts(allProducts);
 }
 
-// Load on page open
+function populateFilter(products){
+  const select = document.getElementById("categoryFilter");
+  const categories = [...new Set(products.map(p=>p.category))];
+  select.innerHTML='<option value="all">All</option>';
+  categories.forEach(c=>select.innerHTML+=`<option value="${c}">${c}</option>`);
+}
+
+function displayProducts(products){
+  const container=document.getElementById("shopContainer");
+  container.innerHTML="";
+  const filteredCat = document.getElementById("categoryFilter").value;
+  const display = filteredCat==="all"?products:products.filter(p=>p.category===filteredCat);
+  if(display.length===0){container.innerHTML="<h2>No products available</h2>"; return;}
+  display.forEach(p=>{
+    container.innerHTML+=`
+    <div class="product-card">
+      <img src="${p.image}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>₹${p.price}</p>
+      <p>${p.description}</p>
+      <small>${p.category}</small>
+    </div>`;
+  });
+}
+
+document.getElementById("categoryFilter").addEventListener("change",()=>displayProducts(allProducts));
+
 fetchProducts();
 </script>
-  
 </body>
 </html>
