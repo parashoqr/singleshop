@@ -112,48 +112,37 @@
 <div id="products"></div>
 
 <script>
-const url = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // Apps Script /exec
-let allProducts = [];
+const EXEC_URL = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // same Apps Script /exec
 
-fetch(url)
-.then(res => res.json())
-.then(data => {
-  allProducts = data;
-  populateCategories(data);
-  displayProducts(data);
-})
-.catch(err => console.log(err));
+// Load products for customers
+function fetchProducts(){
+  fetch(EXEC_URL)
+    .then(res => res.json())
+    .then(data => {
+      if(data.shopStatus !== "on"){
+        document.getElementById("shopContainer").innerHTML = "<h2>Shop is currently closed</h2>";
+        return;
+      }
 
-function populateCategories(products){
-  const dropdown = document.getElementById("categoryFilter");
-  const categories = [...new Set(products.map(p => p.category))];
-  categories.forEach(cat => {
-    if(cat) dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
-  });
+      const container = document.getElementById("shopContainer");
+      container.innerHTML = "";
+
+      data.products.forEach(p => {
+        container.innerHTML += `
+          <div class="product-card">
+            <img src="${p.image}" style="width:120px; height:auto; border-radius:5px;">
+            <h3>${p.name}</h3>
+            <p>Price: ₹${p.price}</p>
+            <p>${p.description}</p>
+            <small>Category: ${p.category}</small>
+          </div>`;
+      });
+    })
+    .catch(err => console.error("Error fetching products:", err));
 }
 
-function displayProducts(products){
-  const container = document.getElementById("products");
-  container.innerHTML = "";
-  products.forEach(product => {
-    container.innerHTML += `
-      <div class="product-card">
-        <img src="${product.image}" alt="${product.name}">
-        <h2>${product.name}</h2>
-        <p class="price">₹${product.price}</p>
-        <p>${product.description}</p>
-        <span class="category">${product.category}</span>
-      </div>
-    `;
-  });
-}
-
-document.getElementById("categoryFilter").addEventListener("change", function(){
-  const selected = this.value;
-  if(selected === "all") displayProducts(allProducts);
-  else displayProducts(allProducts.filter(p => p.category === selected));
-});
+// On page load
+fetchProducts();
 </script>
-
 </body>
 </html>
