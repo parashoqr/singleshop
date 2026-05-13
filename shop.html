@@ -2,103 +2,299 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Premium Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f0f4f8;
-      margin: 0;
-      padding: 0;
-    }
+    /* ── GOOGLE FONT ── */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
-    h1 {
-      text-align: center;
-      color: #222;
-      padding: 20px 0;
-      font-size: 2.5em;
-    }
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
 
-    #categoryFilter {
-      display: block;
-      margin: 0 auto 20px auto;
-      padding: 10px 15px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      outline: none;
-      background: white;
-      cursor: pointer;
-    }
+body{
+  font-family:'Poppins',sans-serif;
+  background:#f0f2f8;
+  margin:0;padding:0;
+  overflow-x:hidden;
+}
 
-    #products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
+/* ══════════════════════════
+   H1 → PREMIUM ANIMATED HEADER
+══════════════════════════ */
+h1{
+  /* Animated gradient background */
+  background:linear-gradient(135deg,#1a1a2e 0%,#0f3460 50%,#e94560 100%);
+  background-size:200% 200%;
+  animation:gradShift 8s ease infinite;
 
-    .product-card {
-      background: linear-gradient(135deg, #ffffff, #e6f0ff);
-      border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      padding: 15px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+  color:#ffffff;
+  text-align:center;
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:0.5px;
+  padding:36px 20px 28px;
+  margin:0;
 
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.2);
-    }
+  /* Floating glow circles */
+  position:relative;
+  overflow:hidden;
+  text-shadow:0 2px 14px rgba(0,0,0,0.3);
+}
 
-    .product-card img {
-      width: 180px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      transition: transform 0.3s;
-    }
+/* Floating blob 1 */
+h1::before{
+  content:'';
+  position:absolute;
+  width:260px;height:260px;
+  background:rgba(255,255,255,0.05);
+  border-radius:50%;
+  top:-90px;left:-70px;
+  animation:blobPulse 6s ease-in-out infinite;
+  pointer-events:none;
+}
 
-    .product-card img:hover {
-      transform: scale(1.05);
-    }
+/* Floating blob 2 */
+h1::after{
+  content:'';
+  position:absolute;
+  width:180px;height:180px;
+  background:rgba(255,255,255,0.05);
+  border-radius:50%;
+  bottom:-50px;right:-40px;
+  animation:blobPulse 6s ease-in-out infinite 3s;
+  pointer-events:none;
+}
 
-    .product-card h2 {
-      margin: 5px 0;
-      font-size: 1.4em;
-      color: #333;
-    }
+@keyframes gradShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
 
-    .product-card p {
-      margin: 3px 0;
-      color: #555;
-    }
+@keyframes blobPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.18)}
+}
 
-    .product-card .price {
-      font-weight: bold;
-      color: #ff4d6d;
-      font-size: 1.2em;
-    }
+/* ══════════════════════════
+   CATEGORY DROPDOWN → PREMIUM PILL FILTER
+══════════════════════════ */
+#categoryFilter{
+  display:block;
+  margin:22px auto 18px auto;
+  padding:12px 42px 12px 20px;
+  font-size:13px;
+  font-weight:600;
+  font-family:'Poppins',sans-serif;
+  border-radius:50px;
+  border:2px solid #e0e0f0;
+  outline:none;
+  background:#fff;
+  color:#333;
+  cursor:pointer;
+  box-shadow:0 4px 16px rgba(15,52,96,0.10);
+  transition:all 0.25s ease;
 
-    .product-card .category {
-      display: inline-block;
-      margin-top: 5px;
-      padding: 3px 10px;
-      background: #007bff;
-      color: white;
-      border-radius: 20px;
-      font-size: 0.85em;
-    }
+  /* Custom arrow */
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230f3460' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+}
 
-    @media(max-width: 600px){
-      #products {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      }
-      .product-card img {
-        width: 140px;
-      }
-    }
+#categoryFilter:focus,
+#categoryFilter:hover{
+  border-color:#0f3460;
+  box-shadow:0 6px 22px rgba(15,52,96,0.18);
+  transform:translateY(-1px);
+}
+
+/* ══════════════════════════
+   PRODUCTS GRID
+   2 columns on mobile (your original was auto-fill)
+   Keeps exactly 2 per row on phones
+   4-6 visible without scrolling
+══════════════════════════ */
+#products{
+  display:grid;
+
+  /* MOBILE: exactly 2 columns */
+  grid-template-columns:repeat(2,1fr);
+
+  gap:12px;
+  padding:14px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+/* Tablet: still 2, slightly bigger gap */
+@media(min-width:480px){
+  #products{
+    gap:14px;
+    padding:16px;
+  }
+}
+
+/* Desktop: 3-4 columns */
+@media(min-width:768px){
+  #products{
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    padding:20px;
+  }
+}
+@media(min-width:1024px){
+  #products{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+
+/* ══════════════════════════
+   PRODUCT CARD — PREMIUM
+══════════════════════════ */
+.product-card{
+  background:#ffffff;
+  border-radius:18px;
+  box-shadow:0 4px 18px rgba(0,0,0,0.07);
+  padding:0;              /* remove padding — image goes edge to edge */
+  text-align:center;
+  transition:transform 0.25s ease, box-shadow 0.25s ease;
+  cursor:pointer;
+  overflow:hidden;        /* clips image to border-radius */
+  position:relative;
+
+  /* Subtle entry — lightweight, no reflow */
+  animation:cardIn 0.4s ease both;
+}
+
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.product-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 40px rgba(15,52,96,0.16);
+}
+
+.product-card:active{
+  transform:scale(0.97);
+}
+
+/* ── IMAGE WRAPPER ──
+   Wraps the <img> for shimmer + zoom effect.
+   We style the img directly since your JS sets it.
+*/
+.product-card img{
+  width:100%;
+  height:130px;
+  object-fit:cover;
+  display:block;
+  border-radius:0;      /* edge to edge inside card */
+  margin:0;
+  transition:transform 0.38s ease;
+
+  /* Skeleton shimmer while loading */
+  background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.4s infinite;
+}
+
+/* Stop shimmer once image loads */
+.product-card img[src]{
+  animation:none;
+  background:none;
+}
+
+@keyframes shimmer{
+  0%{background-position:-200% 0}
+  100%{background-position:200% 0}
+}
+
+.product-card img:hover{
+  transform:scale(1.07);
+}
+
+/* ── CARD TEXT AREA ── */
+.product-card h2{
+  margin:10px 10px 4px;
+  font-size:13px;
+  font-weight:700;
+  color:#1a1a2e;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.product-card p{
+  margin:2px 10px;
+  color:#888;
+  font-size:10px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* ── PRICE ── */
+.product-card .price{
+  font-weight:800;
+  color:#e94560;
+  font-size:15px;
+  margin:4px 10px 2px;
+  display:block;
+}
+
+/* ── CATEGORY BADGE ── */
+.product-card .category{
+  display:inline-block;
+  margin:6px 10px 12px;
+  padding:3px 12px;
+  border-radius:50px;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#fff;
+
+  /* Default gradient — overridden per category below */
+  background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+/* Auto color per category name using CSS attribute tricks */
+/* You can extend these for your actual category names */
+.product-card .category[data-cat="Standard"],
+.product-card .category:not([class*="p"]):not([class*="g"]){
+  background:linear-gradient(135deg,#4facfe,#00f2fe);
+  color:#fff;
+}
+
+/* ══════════════════════════
+   LOADING STATE
+   (for when fetch is in progress)
+══════════════════════════ */
+#products:empty::after{
+  content:'Loading products...';
+  grid-column:1/-1;
+  text-align:center;
+  padding:48px;
+  color:#aaa;
+  font-size:14px;
+  font-weight:500;
+}
+
+/* ══════════════════════════
+   SCROLL BAR — premium thin
+══════════════════════════ */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#f0f2f8}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(#0f3460,#e94560);
+  border-radius:10px;
+  }
   </style>
 </head>
 <body>
