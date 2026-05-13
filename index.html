@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -58,440 +58,128 @@
     }
 
     /* ── STARFIELD ── */
-    .stars-wrap {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .star {
-      position: absolute;
-      background: #fff;
-      border-radius: 50%;
-      animation: starTwinkle var(--dur) ease-in-out infinite var(--delay);
-      opacity: 0;
-    }
-    @keyframes starTwinkle {
-      0%, 100% { opacity: 0; transform: scale(0.8); }
-      50%       { opacity: var(--bright); transform: scale(1.2); }
-    }
+    .stars-wrap { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .star { position: absolute; background: #fff; border-radius: 50%; animation: starTwinkle var(--dur) ease-in-out infinite var(--delay); opacity: 0; }
+    @keyframes starTwinkle { 0%, 100% { opacity: 0; transform: scale(0.8); } 50% { opacity: var(--bright); transform: scale(1.2); } }
 
     /* ── CONTAINER ── */
-    .container {
-      width: 100%;
-      max-width: 620px;
-      z-index: 1;
-    }
+    .container { width: 100%; max-width: 620px; z-index: 1; }
 
     /* ── PAGE HEADER ── */
-    .page-header {
-      text-align: center;
-      margin-bottom: 32px;
-      animation: slideUp 0.6s ease both;
-    }
-    .page-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #ffd700;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: 6px 18px;
-      border-radius: 50px;
-      margin-bottom: 14px;
-    }
-    .page-title {
-      font-size: clamp(24px, 5vw, 36px);
-      font-weight: 900;
-      background: linear-gradient(135deg, #fff, #a8c8ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-    }
-    .page-sub {
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
-      margin-top: 8px;
-      letter-spacing: 0.5px;
-    }
+    .page-header { text-align: center; margin-bottom: 32px; animation: slideUp 0.6s ease both; }
+    .page-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #ffd700; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 6px 18px; border-radius: 50px; margin-bottom: 14px; }
+    .page-title { font-size: clamp(24px, 5vw, 36px); font-weight: 900; background: linear-gradient(135deg, #fff, #a8c8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.5px; }
+    .page-sub { font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 8px; letter-spacing: 0.5px; }
 
     /* ═══════════════════════════════════════
        GLASS PANELS
     ═══════════════════════════════════════ */
-    .glass-panel {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 30px;
-      margin-bottom: 24px;
-      box-shadow:
-        0 20px 60px rgba(0,0,0,0.4),
-        0 0 0 1px rgba(255,255,255,0.03);
-      animation: slideUp 0.6s ease both;
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    .glass-panel { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; padding: 30px; margin-bottom: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03); animation: slideUp 0.6s ease both; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    .panel-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-    .panel-icon {
-      width: 40px; height: 40px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-    }
-    .panel-icon.add-icon {
-      background: linear-gradient(135deg, rgba(233,69,96,0.2), rgba(233,69,96,0.05));
-      border: 1px solid rgba(233,69,96,0.2);
-    }
-    .panel-icon.inv-icon {
-      background: linear-gradient(135deg, rgba(15,52,96,0.4), rgba(15,52,96,0.1));
-      border: 1px solid rgba(15,52,96,0.4);
-    }
-    .panel-title-wrap {}
-    .panel-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: #fff;
-    }
-    .panel-sub {
-      font-size: 11px;
-      color: rgba(255,255,255,0.3);
-      margin-top: 2px;
-    }
+    .panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .panel-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .panel-icon.add-icon { background: linear-gradient(135deg, rgba(233,69,96,0.2), rgba(233,69,96,0.05)); border: 1px solid rgba(233,69,96,0.2); }
+    .panel-icon.inv-icon { background: linear-gradient(135deg, rgba(15,52,96,0.4), rgba(15,52,96,0.1)); border: 1px solid rgba(15,52,96,0.4); }
+    .panel-title { font-size: 17px; font-weight: 800; color: #fff; }
+    .panel-sub { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 2px; }
 
     /* ═══════════════════════════════════════
        FORM
     ═══════════════════════════════════════ */
-    .input-group {
-      margin-bottom: 14px;
-      position: relative;
-    }
+    .input-group { margin-bottom: 14px; position: relative; }
+    .input-label { display: block; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 7px; padding-left: 4px; }
+    
+    .form-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 15px 18px; color: #fff; font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; outline: none; transition: all 0.3s ease; box-shadow: inset 0 2px 8px rgba(0,0,0,0.2); }
+    .form-input::placeholder { color: rgba(255,255,255,0.2); }
+    .form-input:focus { border-color: rgba(233,69,96,0.6); background: rgba(233,69,96,0.04); box-shadow: 0 0 0 4px rgba(233,69,96,0.08), 0 0 20px rgba(233,69,96,0.15), inset 0 2px 8px rgba(0,0,0,0.2); }
 
-    .input-label {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 7px;
-      padding-left: 4px;
-    }
+    /* Price */
+    .price-wrap { position: relative; }
+    .price-symbol { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-weight: 700; font-size: 15px; pointer-events: none; }
+    .price-wrap .form-input { padding-left: 36px; }
 
-    .form-input {
-      width: 100%;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.1);
+    /* ── GALLERY UPLOAD UI ── */
+    .upload-box {
+      border: 2px dashed rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.2);
       border-radius: 14px;
-      padding: 15px 18px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      outline: none;
-      transition: all 0.3s ease;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
-    }
-    .form-input::placeholder {
-      color: rgba(255,255,255,0.2);
-    }
-    .form-input:focus {
-      border-color: rgba(233,69,96,0.6);
-      background: rgba(233,69,96,0.04);
-      box-shadow:
-        0 0 0 4px rgba(233,69,96,0.08),
-        0 0 20px rgba(233,69,96,0.15),
-        inset 0 2px 8px rgba(0,0,0,0.2);
-    }
-
-    /* Price input ₹ symbol */
-    .price-wrap {
-      position: relative;
-    }
-    .price-symbol {
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: rgba(255,255,255,0.4);
-      font-weight: 700;
-      font-size: 15px;
-      pointer-events: none;
-    }
-    .price-wrap .form-input {
-      padding-left: 36px;
-    }
-
-    /* Image preview */
-    .img-preview-wrap {
-      margin-top: 10px;
-      border-radius: 12px;
-      overflow: hidden;
-      height: 0;
-      transition: height 0.4s ease;
-    }
-    .img-preview-wrap.show {
-      height: 140px;
-    }
-    .img-preview {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-      display: block;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* Submit button */
-    .btn-submit {
-      width: 100%;
-      background: linear-gradient(135deg, #e94560, #c62a47);
-      color: #fff;
-      border: none;
-      border-radius: 14px;
-      padding: 17px;
-      font-size: 15px;
-      font-weight: 700;
+      padding: 30px 20px;
+      text-align: center;
       cursor: pointer;
-      letter-spacing: 0.5px;
-      font-family: 'Inter', sans-serif;
-      box-shadow:
-        0 8px 24px rgba(233,69,96,0.35),
-        0 0 0 1px rgba(233,69,96,0.2);
-      transition: all 0.3s ease;
-      margin-top: 6px;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-submit::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg,
-        rgba(255,255,255,0.15) 0%,
-        transparent 50%);
-      pointer-events: none;
-    }
-    .btn-submit:hover {
-      transform: translateY(-2px);
-      box-shadow:
-        0 14px 30px rgba(233,69,96,0.5),
-        0 0 0 1px rgba(233,69,96,0.3);
-    }
-    .btn-submit:active { transform: scale(0.98); }
-    .btn-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* ═══════════════════════════════════════
-       INVENTORY COUNT BADGE
-    ═══════════════════════════════════════ */
-    .inv-count {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #e94560, #c62a47);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      min-width: 22px;
-      height: 22px;
-      border-radius: 50px;
-      padding: 0 6px;
-      margin-left: 8px;
-      box-shadow: 0 4px 12px rgba(233,69,96,0.4);
-    }
-
-    /* ═══════════════════════════════════════
-       PRODUCT ROW
-    ═══════════════════════════════════════ */
-    .product-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      padding: 12px 14px;
-      border-radius: 16px;
-      margin-bottom: 10px;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-    }
-
-    /* Left glow line on hover */
-    .product-row::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: linear-gradient(180deg, #e94560, #0f3460);
-      border-radius: 3px 0 0 3px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .product-row:hover::before { opacity: 1; }
-    .product-row:hover {
-      background: rgba(255,255,255,0.055);
-      border-color: rgba(255,255,255,0.12);
-      transform: translateX(3px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    }
-
-    /* ── PRODUCT THUMBNAIL ── */
-    .prod-thumb-wrap {
-      flex-shrink: 0;
-      width: 60px;
-      height: 60px;
-      border-radius: 13px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: linear-gradient(135deg,
-        rgba(15,52,96,0.4),
-        rgba(233,69,96,0.15));
-      position: relative;
-    }
-
-    .prod-thumb {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.35s ease;
-    }
-    .product-row:hover .prod-thumb {
-      transform: scale(1.1);
-    }
-
-    /* Fallback when no image */
-    .prod-thumb-fallback {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      background: linear-gradient(135deg,
-        rgba(15,52,96,0.5),
-        rgba(233,69,96,0.2));
-    }
-
-    /* ── PRODUCT INFO ── */
-    .prod-info {
-      flex: 1;
-      min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      align-items: center;
+      justify-content: center;
     }
-
-    .prod-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.92);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .upload-box:hover {
+      border-color: rgba(233,69,96,0.5);
+      background: rgba(233,69,96,0.05);
     }
-
-    .prod-price {
-      font-size: 14px;
-      font-weight: 800;
-      color: #e94560;
-      text-shadow: 0 0 14px rgba(233,69,96,0.4);
+    .upload-icon { font-size: 32px; margin-bottom: 8px; }
+    .upload-text { font-size: 13px; font-weight: 600; color: #fff; }
+    .upload-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+    
+    /* Live Local Preview Image */
+    .upload-preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      z-index: 2;
     }
-
-    .prod-category {
-      font-size: 9px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.25);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* ── DELETE BUTTON ── */
-    .btn-delete {
-      flex-shrink: 0;
-      background: rgba(255,77,77,0.08);
-      color: rgba(255,100,100,0.8);
-      border: 1px solid rgba(255,77,77,0.15);
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      white-space: nowrap;
-    }
-    .btn-delete:hover {
-      background: #e94560;
+    .change-img-btn {
+      position: absolute;
+      bottom: 8px;
+      background: rgba(0,0,0,0.7);
       color: #fff;
-      border-color: transparent;
-      box-shadow: 0 6px 18px rgba(233,69,96,0.4);
-      transform: scale(1.05);
+      font-size: 10px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      z-index: 3;
+      display: none;
+      pointer-events: none; /* Let clicks pass to file input */
+      backdrop-filter: blur(5px);
     }
-    .btn-delete:active { transform: scale(0.97); }
+
+    /* Submit btn */
+    .btn-submit { width: 100%; background: linear-gradient(135deg, #e94560, #c62a47); color: #fff; border: none; border-radius: 14px; padding: 17px; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; font-family: 'Inter', sans-serif; box-shadow: 0 8px 24px rgba(233,69,96,0.35), 0 0 0 1px rgba(233,69,96,0.2); transition: all 0.3s ease; margin-top: 6px; position: relative; overflow: hidden; }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(233,69,96,0.5), 0 0 0 1px rgba(233,69,96,0.3); }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
     /* ═══════════════════════════════════════
-       LOADING & EMPTY STATES
+       INVENTORY ROWS
     ═══════════════════════════════════════ */
-    .state-box {
-      text-align: center;
-      padding: 36px 20px;
-      color: rgba(255,255,255,0.25);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 1px;
-    }
-    .state-box .state-icon {
-      font-size: 36px;
-      margin-bottom: 12px;
-      display: block;
-    }
-    .state-loading {
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; }
-      50%       { opacity: 1; }
-    }
+    .inv-count { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #e94560, #c62a47); color: #fff; font-size: 10px; font-weight: 800; min-width: 22px; height: 22px; border-radius: 50px; padding: 0 6px; margin-left: 8px; }
+    
+    .product-row { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 12px 14px; border-radius: 16px; margin-bottom: 10px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .product-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #e94560, #0f3460); border-radius: 3px 0 0 3px; opacity: 0; transition: opacity 0.3s; }
+    .product-row:hover::before { opacity: 1; }
+    .product-row:hover { background: rgba(255,255,255,0.055); border-color: rgba(255,255,255,0.12); transform: translateX(3px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
 
-    /* ═══════════════════════════════════════
-       SCROLLBAR
-    ═══════════════════════════════════════ */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(#0f3460, #e94560);
-      border-radius: 10px;
-    }
-    ::selection {
-      background: rgba(233,69,96,0.3);
-      color: #fff;
-    }
+    .prod-thumb-wrap { flex-shrink: 0; width: 60px; height: 60px; border-radius: 13px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(135deg, rgba(15,52,96,0.4), rgba(233,69,96,0.15)); position: relative; }
+    .prod-thumb { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s ease; }
+    .product-row:hover .prod-thumb { transform: scale(1.1); }
+    .prod-thumb-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 26px; background: linear-gradient(135deg, rgba(15,52,96,0.5), rgba(233,69,96,0.2)); }
+
+    .prod-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+    .prod-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.92); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .prod-price { font-size: 14px; font-weight: 800; color: #e94560; text-shadow: 0 0 14px rgba(233,69,96,0.4); }
+    .prod-category { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .btn-delete { flex-shrink: 0; background: rgba(255,77,77,0.08); color: rgba(255,100,100,0.8); border: 1px solid rgba(255,77,77,0.15); padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.25s ease; }
+    .btn-delete:hover { background: #e94560; color: #fff; border-color: transparent; box-shadow: 0 6px 18px rgba(233,69,96,0.4); transform: scale(1.05); }
+
+    .state-box { text-align: center; padding: 36px 20px; color: rgba(255,255,255,0.25); font-size: 13px; font-weight: 500; }
+    .state-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+    .state-loading { animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
   </style>
 </head>
@@ -502,7 +190,6 @@
 
 <div class="container">
 
-  <!-- ══ PAGE HEADER ══ -->
   <div class="page-header">
     <div class="page-badge">⚙️ &nbsp;Admin Panel</div>
     <h1 class="page-title">Product Dashboard</h1>
@@ -511,255 +198,219 @@
 
   <!-- ══ ADD PRODUCT PANEL ══ -->
   <div class="glass-panel" style="animation-delay:0.1s">
-
     <div class="panel-header">
       <div class="panel-icon add-icon">➕</div>
       <div class="panel-title-wrap">
         <div class="panel-title">Add New Product</div>
-        <div class="panel-sub">Fill all fields and deploy instantly</div>
+        <div class="panel-sub">Tap photo, fill details, and deploy</div>
       </div>
     </div>
 
     <form id="productForm">
 
+      <!-- HIDDEN INPUT: Cloudinary will put the final URL here automatically -->
+      <input type="hidden" name="image" id="finalImageUrl">
+
+      <div class="input-group">
+        <label class="input-label">Product Image</label>
+        
+        <!-- TAP TO UPLOAD UI -->
+        <label class="upload-box" id="uploadBox">
+          <input type="file" id="imageInput" accept="image/*" style="display:none;">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">Tap to select from Gallery</div>
+          <div class="upload-sub">Supports JPG, PNG, WEBP</div>
+          
+          <img id="localPreview" class="upload-preview" src="">
+          <div id="changeText" class="change-img-btn">Tap to change</div>
+        </label>
+      </div>
+
       <div class="input-group">
         <label class="input-label">Product Name</label>
-        <input
-          type="text"
-          name="name"
-          class="form-input"
-          placeholder="e.g. Premium Cotton Shirt"
-          required
-        >
+        <input type="text" name="name" class="form-input" placeholder="e.g. Premium Cotton Shirt" required>
       </div>
 
       <div class="input-group">
         <label class="input-label">Description</label>
-        <input
-          type="text"
-          name="description"
-          class="form-input"
-          placeholder="Short product description"
-          required
-        >
+        <input type="text" name="description" class="form-input" placeholder="Short product description" required>
       </div>
 
       <div class="input-group">
         <label class="input-label">Category</label>
-        <input
-          type="text"
-          name="category"
-          class="form-input"
-          placeholder="e.g. Premium, Standard, Electronics"
-        >
+        <input type="text" name="category" class="form-input" placeholder="e.g. Premium, Standard, Electronics">
       </div>
 
       <div class="input-group">
         <label class="input-label">Price</label>
         <div class="price-wrap">
           <span class="price-symbol">₹</span>
-          <input
-            type="number"
-            name="price"
-            class="form-input"
-            placeholder="0.00"
-            required
-          >
+          <input type="number" name="price" class="form-input" placeholder="0.00" required>
         </div>
       </div>
 
-      <div class="input-group">
-        <label class="input-label">Image URL</label>
-        <input
-          type="text"
-          name="image"
-          id="imageInput"
-          class="form-input"
-          placeholder="https://your-image-link.com/photo.jpg"
-        >
-        <!-- Live image preview -->
-        <div class="img-preview-wrap" id="imgPreviewWrap">
-          <img class="img-preview" id="imgPreview" src="" alt="Preview"/>
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        class="btn-submit"
-        id="submitBtn"
-      >
-        🚀 &nbsp;Deploy Product
-      </button>
-
+      <button type="submit" class="btn-submit" id="submitBtn">🚀 &nbsp;Deploy Product</button>
     </form>
   </div>
 
   <!-- ══ INVENTORY PANEL ══ -->
   <div class="glass-panel" style="animation-delay:0.2s">
-
     <div class="panel-header">
       <div class="panel-icon inv-icon">📦</div>
       <div class="panel-title-wrap">
-        <div class="panel-title">
-          Inventory
-          <span class="inv-count" id="invCount">—</span>
-        </div>
+        <div class="panel-title">Inventory <span class="inv-count" id="invCount">—</span></div>
         <div class="panel-sub">Tap delete to remove a product</div>
       </div>
     </div>
-
     <div id="adminProducts">
       <div class="state-box state-loading">
-        <span class="state-icon">⏳</span>
-        Fetching inventory data...
+        <span class="state-icon">⏳</span> Fetching inventory data...
       </div>
     </div>
-
   </div>
 
-</div><!-- end container -->
+</div>
 
 <script>
-
 /* ════════════════════════════════════════
-   YOUR ORIGINAL BACKEND URL — UNTOUCHED
+   YOUR APIS (CHANGE CLOUDINARY STUFF HERE)
 ════════════════════════════════════════ */
+// 1. Google Script Backend (Kept exactly identical)
 const adminUrl = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec";
 
+// 2. Cloudinary Setup
+const CLOUD_NAME = "dxm39ikfd"; // <-- REPLACE THIS
+const UPLOAD_PRESET = "parashoqr_preset"; // <-- REPLACE THIS
+const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+
 /* ════════════════════════════════════════
-   LIVE IMAGE PREVIEW
+   LOCAL IMAGE PREVIEW LOGIC
 ════════════════════════════════════════ */
-let previewTimer = null;
-document.getElementById('imageInput').addEventListener('input', function(){
-  clearTimeout(previewTimer);
-  const url = this.value.trim();
-  const wrap = document.getElementById('imgPreviewWrap');
-  const img  = document.getElementById('imgPreview');
+const imageInput = document.getElementById('imageInput');
+const localPreview = document.getElementById('localPreview');
+const changeText = document.getElementById('changeText');
 
-  if(!url){
-    wrap.classList.remove('show');
-    return;
+imageInput.addEventListener('change', function() {
+  const file = this.files[0];
+  if(file) {
+    const objectUrl = URL.createObjectURL(file);
+    localPreview.src = objectUrl;
+    localPreview.style.display = 'block';
+    changeText.style.display = 'block';
+  } else {
+    localPreview.style.display = 'none';
+    changeText.style.display = 'none';
   }
-
-  /* Debounce 600ms so we don't hammer every keystroke */
-  previewTimer = setTimeout(()=>{
-    img.src = url;
-    img.onload  = () => wrap.classList.add('show');
-    img.onerror = () => wrap.classList.remove('show');
-  }, 600);
 });
 
+
 /* ════════════════════════════════════════
-   ADD PRODUCT — YOUR ORIGINAL LOGIC
+   ADD PRODUCT (WITH AUTO-UPLOAD)
 ════════════════════════════════════════ */
-document.getElementById("productForm").addEventListener("submit", function(e){
+document.getElementById("productForm").addEventListener("submit", async function(e){
   e.preventDefault();
   const btn = document.getElementById("submitBtn");
+  const file = imageInput.files[0];
+  const hiddenImageInput = document.getElementById("finalImageUrl");
 
-  /* Loading state */
-  btn.textContent = "⏳  Deploying...";
   btn.disabled = true;
 
-  const formData = new FormData(this);
+  try {
+    // STEP 1: Upload to Cloudinary if user selected a photo
+    if (file) {
+      btn.textContent = "☁️ Uploading Image...";
+      
+      const formDataCloud = new FormData();
+      formDataCloud.append("file", file);
+      formDataCloud.append("upload_preset", UPLOAD_PRESET);
 
-  fetch(adminUrl, {
-    method: "POST",
-    body: formData
-  })
-  .then(res => res.text())
-  .then(msg => {
+      const resCloud = await fetch(cloudinaryUrl, {
+        method: "POST",
+        body: formDataCloud
+      });
+
+      const dataCloud = await resCloud.json();
+      
+      if (dataCloud.secure_url) {
+        // Success! Set the hidden input to the Cloudinary URL
+        hiddenImageInput.value = dataCloud.secure_url;
+      } else {
+        throw new Error("Cloudinary upload failed. Check Preset.");
+      }
+    } else {
+      // If they didn't select an image, just leave it blank
+      hiddenImageInput.value = "";
+    }
+
+    // STEP 2: Send data to Google Sheets
+    btn.textContent = "🚀 Saving to Database...";
+    
+    // Grabs all form data, including our new hidden Image URL
+    const finalFormData = new FormData(this);
+
+    const resGAS = await fetch(adminUrl, {
+      method: "POST",
+      body: finalFormData
+    });
+    
+    const msg = await resGAS.text();
     alert("✅ " + msg);
+    
+    // Reset Form & Image UI
     this.reset();
-
-    /* Reset image preview */
-    document.getElementById('imgPreviewWrap').classList.remove('show');
-    document.getElementById('imgPreview').src = '';
-
+    imageInput.value = "";
+    localPreview.style.display = 'none';
+    changeText.style.display = 'none';
+    hiddenImageInput.value = "";
+    
     fetchAdminProducts();
-  })
-  .catch(err => {
-    alert("❌ Error: " + err);
-  })
-  .finally(()=>{
+
+  } catch (err) {
+    alert("❌ Error: " + err.message);
+  } finally {
     btn.innerHTML = "🚀 &nbsp;Deploy Product";
     btn.disabled = false;
-  });
+  }
 });
 
+
 /* ════════════════════════════════════════
-   FETCH PRODUCTS — YOUR ORIGINAL LOGIC
+   FETCH PRODUCTS
 ════════════════════════════════════════ */
 function fetchAdminProducts(){
   const container = document.getElementById("adminProducts");
-  container.innerHTML = `
-    <div class="state-box state-loading">
-      <span class="state-icon">⏳</span>
-      Fetching inventory data...
-    </div>
-  `;
+  container.innerHTML = `<div class="state-box state-loading"><span class="state-icon">⏳</span> Fetching inventory data...</div>`;
 
   fetch(adminUrl)
   .then(res => res.json())
   .then(data => {
     container.innerHTML = "";
-
-    /* Update count badge */
     document.getElementById('invCount').textContent = data.length;
 
     if(data.length === 0){
-      container.innerHTML = `
-        <div class="state-box">
-          <span class="state-icon">📭</span>
-          Inventory is empty
-        </div>
-      `;
+      container.innerHTML = `<div class="state-box"><span class="state-icon">📭</span> Inventory is empty</div>`;
       return;
     }
 
-    /* DocumentFragment — single DOM write for performance */
     const frag = document.createDocumentFragment();
 
     data.forEach((p, index) => {
-
-      /* Image or emoji fallback */
       const imgHTML = p.image
-        ? `<img
-             class="prod-thumb"
-             src="${p.image}"
-             alt="${p.name}"
-             loading="lazy"
-             onerror="
-               this.style.display='none';
-               this.nextElementSibling.style.display='flex';
-             "
-           />
+        ? `<img class="prod-thumb" src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
            <div class="prod-thumb-fallback" style="display:none">🛍️</div>`
         : `<div class="prod-thumb-fallback">🛍️</div>`;
 
       const row = document.createElement('div');
       row.className = 'product-row';
       row.innerHTML = `
-
-        <!-- THUMBNAIL -->
-        <div class="prod-thumb-wrap">
-          ${imgHTML}
-        </div>
-
-        <!-- INFO -->
+        <div class="prod-thumb-wrap">${imgHTML}</div>
         <div class="prod-info">
           <span class="prod-name">${p.name}</span>
           <span class="prod-price">₹${p.price}</span>
           <span class="prod-category">${p.category || 'Uncategorized'}</span>
         </div>
-
-        <!-- DELETE -->
-        <button
-          class="btn-delete"
-          onclick="deleteProduct(${index + 2})"
-        >
-          🗑 Delete
-        </button>
-
+        <button class="btn-delete" onclick="deleteProduct(${index + 2})">🗑 Delete</button>
       `;
       frag.appendChild(row);
     });
@@ -768,20 +419,12 @@ function fetchAdminProducts(){
   })
   .catch(err => {
     document.getElementById('invCount').textContent = '!';
-    container.innerHTML = `
-      <div class="state-box">
-        <span class="state-icon" style="color:#e94560">❌</span>
-        <span style="color:rgba(255,100,100,0.7)">
-          Failed to load inventory.<br>Check your connection.
-        </span>
-      </div>
-    `;
-    console.error(err);
+    container.innerHTML = `<div class="state-box"><span class="state-icon" style="color:#e94560">❌</span><span style="color:rgba(255,100,100,0.7)">Failed to load inventory. Check your connection.</span></div>`;
   });
 }
 
 /* ════════════════════════════════════════
-   DELETE PRODUCT — YOUR ORIGINAL LOGIC
+   DELETE PRODUCT
 ════════════════════════════════════════ */
 function deleteProduct(row){
   if(!confirm("⚠️ Delete this product permanently?")) return;
@@ -807,21 +450,12 @@ function deleteProduct(row){
     const s = document.createElement('div');
     s.className = 'star';
     const size = Math.random() < 0.7 ? 1 : 2;
-    s.style.cssText = `
-      left:${Math.random()*100}%;
-      top:${Math.random()*100}%;
-      width:${size}px;
-      height:${size}px;
-      --dur:${2 + Math.random()*4}s;
-      --delay:-${Math.random()*5}s;
-      --bright:${0.3 + Math.random()*0.7};
-    `;
+    s.style.cssText = `left:${Math.random()*100}%; top:${Math.random()*100}%; width:${size}px; height:${size}px; --dur:${2 + Math.random()*4}s; --delay:-${Math.random()*5}s; --bright:${0.3 + Math.random()*0.7};`;
     frag.appendChild(s);
   }
   wrap.appendChild(frag);
 })();
 
-/* Load on start */
 fetchAdminProducts();
 
 </script>
