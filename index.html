@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,6 +6,7 @@
   <title>Premium Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+
     /* ═══════════════════════════════════════
        ROOT & RESET
     ═══════════════════════════════════════ */
@@ -20,7 +21,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg);
@@ -34,7 +35,7 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Background Glow */
+    /* ── AMBIENT BACKGROUND GLOW ── */
     body::before {
       content: '';
       position: fixed;
@@ -56,245 +57,608 @@
       pointer-events: none;
     }
 
+    /* ── STARFIELD ── */
+    .stars-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: starTwinkle var(--dur) ease-in-out infinite var(--delay);
+      opacity: 0;
+    }
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50%       { opacity: var(--bright); transform: scale(1.2); }
+    }
+
+    /* ── CONTAINER ── */
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 620px;
       z-index: 1;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 32px;
+      animation: slideUp 0.6s ease both;
+    }
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #ffd700;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+    .page-title {
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff, #a8c8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+    .page-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      margin-top: 8px;
+      letter-spacing: 0.5px;
     }
 
     /* ═══════════════════════════════════════
        GLASS PANELS
     ═══════════════════════════════════════ */
     .glass-panel {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-radius: 24px;
       padding: 30px;
-      margin-bottom: 30px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      animation: slideUp 0.6s ease-out both;
+      margin-bottom: 24px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.4),
+        0 0 0 1px rgba(255,255,255,0.03);
+      animation: slideUp 0.6s ease both;
     }
-
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .panel-title {
-      font-size: 24px;
-      font-weight: 800;
-      text-align: center;
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 24px;
-      background: linear-gradient(135deg, #fff, #a8c8ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .panel-icon {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .panel-icon.add-icon {
+      background: linear-gradient(135deg, rgba(233,69,96,0.2), rgba(233,69,96,0.05));
+      border: 1px solid rgba(233,69,96,0.2);
+    }
+    .panel-icon.inv-icon {
+      background: linear-gradient(135deg, rgba(15,52,96,0.4), rgba(15,52,96,0.1));
+      border: 1px solid rgba(15,52,96,0.4);
+    }
+    .panel-title-wrap {}
+    .panel-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .panel-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      margin-top: 2px;
     }
 
     /* ═══════════════════════════════════════
-       FORM INPUTS
+       FORM
     ═══════════════════════════════════════ */
     .input-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       position: relative;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+      padding-left: 4px;
     }
 
     .form-input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 16px 20px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 15px 18px;
       color: #fff;
-      font-size: 15px;
+      font-size: 14px;
+      font-weight: 500;
       font-family: 'Inter', sans-serif;
       outline: none;
       transition: all 0.3s ease;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
     }
-
     .form-input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255,255,255,0.2);
     }
-
     .form-input:focus {
-      border-color: var(--accent);
-      background: rgba(233, 69, 96, 0.05);
-      box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.1), 0 0 15px rgba(233, 69, 96, 0.2);
+      border-color: rgba(233,69,96,0.6);
+      background: rgba(233,69,96,0.04);
+      box-shadow:
+        0 0 0 4px rgba(233,69,96,0.08),
+        0 0 20px rgba(233,69,96,0.15),
+        inset 0 2px 8px rgba(0,0,0,0.2);
     }
 
-    /* Price input specific grouping */
-    .price-group::before {
-      content: '₹';
+    /* Price input ₹ symbol */
+    .price-wrap {
+      position: relative;
+    }
+    .price-symbol {
       position: absolute;
-      left: 20px;
+      left: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.5);
-      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      font-weight: 700;
+      font-size: 15px;
       pointer-events: none;
     }
-    .price-group .form-input {
-      padding-left: 40px;
+    .price-wrap .form-input {
+      padding-left: 36px;
     }
 
-    /* ═══════════════════════════════════════
-       BUTTONS
-    ═══════════════════════════════════════ */
+    /* Image preview */
+    .img-preview-wrap {
+      margin-top: 10px;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 0;
+      transition: height 0.4s ease;
+    }
+    .img-preview-wrap.show {
+      height: 140px;
+    }
+    .img-preview {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Submit button */
     .btn-submit {
       width: 100%;
       background: linear-gradient(135deg, #e94560, #c62a47);
       color: #fff;
       border: none;
-      border-radius: 12px;
-      padding: 16px;
-      font-size: 16px;
+      border-radius: 14px;
+      padding: 17px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(233, 69, 96, 0.3);
-      transition: all 0.3s ease;
       letter-spacing: 0.5px;
-      margin-top: 10px;
+      font-family: 'Inter', sans-serif;
+      box-shadow:
+        0 8px 24px rgba(233,69,96,0.35),
+        0 0 0 1px rgba(233,69,96,0.2);
+      transition: all 0.3s ease;
+      margin-top: 6px;
+      position: relative;
+      overflow: hidden;
     }
-
+    .btn-submit::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.15) 0%,
+        transparent 50%);
+      pointer-events: none;
+    }
     .btn-submit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba(233, 69, 96, 0.5);
+      box-shadow:
+        0 14px 30px rgba(233,69,96,0.5),
+        0 0 0 1px rgba(233,69,96,0.3);
     }
-    .btn-submit:active {
-      transform: scale(0.98);
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     /* ═══════════════════════════════════════
-       PRODUCT LIST DASHBOARD
+       INVENTORY COUNT BADGE
+    ═══════════════════════════════════════ */
+    .inv-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e94560, #c62a47);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50px;
+      padding: 0 6px;
+      margin-left: 8px;
+      box-shadow: 0 4px 12px rgba(233,69,96,0.4);
+    }
+
+    /* ═══════════════════════════════════════
+       PRODUCT ROW
     ═══════════════════════════════════════ */
     .product-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 16px 20px;
+      gap: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 12px 14px;
       border-radius: 16px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
+    /* Left glow line on hover */
+    .product-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, #e94560, #0f3460);
+      border-radius: 3px 0 0 3px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .product-row:hover::before { opacity: 1; }
     .product-row:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.15);
-      transform: translateX(4px);
+      background: rgba(255,255,255,0.055);
+      border-color: rgba(255,255,255,0.12);
+      transform: translateX(3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
     }
 
+    /* ── PRODUCT THUMBNAIL ── */
+    .prod-thumb-wrap {
+      flex-shrink: 0;
+      width: 60px;
+      height: 60px;
+      border-radius: 13px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(135deg,
+        rgba(15,52,96,0.4),
+        rgba(233,69,96,0.15));
+      position: relative;
+    }
+
+    .prod-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+    .product-row:hover .prod-thumb {
+      transform: scale(1.1);
+    }
+
+    /* Fallback when no image */
+    .prod-thumb-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: linear-gradient(135deg,
+        rgba(15,52,96,0.5),
+        rgba(233,69,96,0.2));
+    }
+
+    /* ── PRODUCT INFO ── */
     .prod-info {
+      flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     .prod-name {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 700;
-      color: #fff;
+      color: rgba(255,255,255,0.92);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .prod-price {
       font-size: 14px;
-      font-weight: 600;
-      color: var(--accent);
+      font-weight: 800;
+      color: #e94560;
+      text-shadow: 0 0 14px rgba(233,69,96,0.4);
     }
 
+    .prod-category {
+      font-size: 9px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── DELETE BUTTON ── */
     .btn-delete {
-      background: rgba(255, 77, 77, 0.1);
-      color: #ff4d4d;
-      border: 1px solid rgba(255, 77, 77, 0.2);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
+      flex-shrink: 0;
+      background: rgba(255,77,77,0.08);
+      color: rgba(255,100,100,0.8);
+      border: 1px solid rgba(255,77,77,0.15);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12px;
       font-weight: 600;
+      font-family: 'Inter', sans-serif;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      white-space: nowrap;
     }
-
     .btn-delete:hover {
-      background: #ff4d4d;
+      background: #e94560;
       color: #fff;
-      box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+      border-color: transparent;
+      box-shadow: 0 6px 18px rgba(233,69,96,0.4);
+      transform: scale(1.05);
     }
+    .btn-delete:active { transform: scale(0.97); }
 
-    /* Loading state */
-    .loading-text {
+    /* ═══════════════════════════════════════
+       LOADING & EMPTY STATES
+    ═══════════════════════════════════════ */
+    .state-box {
       text-align: center;
-      color: var(--text-muted);
-      font-size: 14px;
-      padding: 20px;
-      animation: pulse 1.5s infinite;
+      padding: 36px 20px;
+      color: rgba(255,255,255,0.25);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    .state-box .state-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .state-loading {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
+    /* ═══════════════════════════════════════
+       SCROLLBAR
+    ═══════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(#0f3460, #e94560);
+      border-radius: 10px;
     }
+    ::selection {
+      background: rgba(233,69,96,0.3);
+      color: #fff;
+    }
+
   </style>
 </head>
 <body>
 
+<!-- STARFIELD -->
+<div class="stars-wrap" id="starsWrap"></div>
+
 <div class="container">
-  
-  <!-- ══ ADD PRODUCT FORM ══ -->
-  <div class="glass-panel" style="animation-delay: 0.1s;">
-    <h2 class="panel-title">Add New Product</h2>
-    
+
+  <!-- ══ PAGE HEADER ══ -->
+  <div class="page-header">
+    <div class="page-badge">⚙️ &nbsp;Admin Panel</div>
+    <h1 class="page-title">Product Dashboard</h1>
+    <p class="page-sub">Manage your store inventory in real time</p>
+  </div>
+
+  <!-- ══ ADD PRODUCT PANEL ══ -->
+  <div class="glass-panel" style="animation-delay:0.1s">
+
+    <div class="panel-header">
+      <div class="panel-icon add-icon">➕</div>
+      <div class="panel-title-wrap">
+        <div class="panel-title">Add New Product</div>
+        <div class="panel-sub">Fill all fields and deploy instantly</div>
+      </div>
+    </div>
+
     <form id="productForm">
+
       <div class="input-group">
-        <input type="text" name="name" class="form-input" placeholder="Product Name" required>
-      </div>
-      
-      <div class="input-group">
-        <input type="text" name="description" class="form-input" placeholder="Short Description" required>
-      </div>
-      
-      <div class="input-group">
-        <input type="text" name="category" class="form-input" placeholder="Category (e.g. Premium, Standard)">
-      </div>
-      
-      <div class="input-group price-group">
-        <input type="number" name="price" class="form-input" placeholder="Price" required>
-      </div>
-      
-      <div class="input-group">
-        <input type="text" name="image" class="form-input" placeholder="Image URL (https://...)">
+        <label class="input-label">Product Name</label>
+        <input
+          type="text"
+          name="name"
+          class="form-input"
+          placeholder="e.g. Premium Cotton Shirt"
+          required
+        >
       </div>
 
-      <button type="submit" class="btn-submit" id="submitBtn">Deploy Product</button>
+      <div class="input-group">
+        <label class="input-label">Description</label>
+        <input
+          type="text"
+          name="description"
+          class="form-input"
+          placeholder="Short product description"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Category</label>
+        <input
+          type="text"
+          name="category"
+          class="form-input"
+          placeholder="e.g. Premium, Standard, Electronics"
+        >
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Price</label>
+        <div class="price-wrap">
+          <span class="price-symbol">₹</span>
+          <input
+            type="number"
+            name="price"
+            class="form-input"
+            placeholder="0.00"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Image URL</label>
+        <input
+          type="text"
+          name="image"
+          id="imageInput"
+          class="form-input"
+          placeholder="https://your-image-link.com/photo.jpg"
+        >
+        <!-- Live image preview -->
+        <div class="img-preview-wrap" id="imgPreviewWrap">
+          <img class="img-preview" id="imgPreview" src="" alt="Preview"/>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn-submit"
+        id="submitBtn"
+      >
+        🚀 &nbsp;Deploy Product
+      </button>
+
     </form>
   </div>
 
-  <!-- ══ INVENTORY DASHBOARD ══ -->
-  <div class="glass-panel" style="animation-delay: 0.2s;">
-    <h2 class="panel-title">Inventory Dashboard</h2>
-    <div id="adminProducts">
-      <div class="loading-text">Fetching inventory data...</div>
+  <!-- ══ INVENTORY PANEL ══ -->
+  <div class="glass-panel" style="animation-delay:0.2s">
+
+    <div class="panel-header">
+      <div class="panel-icon inv-icon">📦</div>
+      <div class="panel-title-wrap">
+        <div class="panel-title">
+          Inventory
+          <span class="inv-count" id="invCount">—</span>
+        </div>
+        <div class="panel-sub">Tap delete to remove a product</div>
+      </div>
     </div>
+
+    <div id="adminProducts">
+      <div class="state-box state-loading">
+        <span class="state-icon">⏳</span>
+        Fetching inventory data...
+      </div>
+    </div>
+
   </div>
 
-</div>
+</div><!-- end container -->
 
 <script>
-// Keep your exact backend URL
+
+/* ════════════════════════════════════════
+   YOUR ORIGINAL BACKEND URL — UNTOUCHED
+════════════════════════════════════════ */
 const adminUrl = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec";
 
-// ✅ ADD PRODUCT
-document.getElementById("productForm").addEventListener("submit", function(e) {
+/* ════════════════════════════════════════
+   LIVE IMAGE PREVIEW
+════════════════════════════════════════ */
+let previewTimer = null;
+document.getElementById('imageInput').addEventListener('input', function(){
+  clearTimeout(previewTimer);
+  const url = this.value.trim();
+  const wrap = document.getElementById('imgPreviewWrap');
+  const img  = document.getElementById('imgPreview');
+
+  if(!url){
+    wrap.classList.remove('show');
+    return;
+  }
+
+  /* Debounce 600ms so we don't hammer every keystroke */
+  previewTimer = setTimeout(()=>{
+    img.src = url;
+    img.onload  = () => wrap.classList.add('show');
+    img.onerror = () => wrap.classList.remove('show');
+  }, 600);
+});
+
+/* ════════════════════════════════════════
+   ADD PRODUCT — YOUR ORIGINAL LOGIC
+════════════════════════════════════════ */
+document.getElementById("productForm").addEventListener("submit", function(e){
   e.preventDefault();
-  const submitBtn = document.getElementById("submitBtn");
-  const originalText = submitBtn.innerText;
-  
-  // Visual feedback during submission
-  submitBtn.innerText = "Deploying...";
-  submitBtn.style.opacity = "0.7";
-  submitBtn.style.pointerEvents = "none";
+  const btn = document.getElementById("submitBtn");
+
+  /* Loading state */
+  btn.textContent = "⏳  Deploying...";
+  btn.disabled = true;
 
   const formData = new FormData(this);
 
@@ -304,71 +668,162 @@ document.getElementById("productForm").addEventListener("submit", function(e) {
   })
   .then(res => res.text())
   .then(msg => {
-    alert("✅ " + msg); // Adds a nice checkmark to your alert
+    alert("✅ " + msg);
     this.reset();
+
+    /* Reset image preview */
+    document.getElementById('imgPreviewWrap').classList.remove('show');
+    document.getElementById('imgPreview').src = '';
+
     fetchAdminProducts();
   })
   .catch(err => {
     alert("❌ Error: " + err);
   })
-  .finally(() => {
-    // Reset button state
-    submitBtn.innerText = originalText;
-    submitBtn.style.opacity = "1";
-    submitBtn.style.pointerEvents = "auto";
+  .finally(()=>{
+    btn.innerHTML = "🚀 &nbsp;Deploy Product";
+    btn.disabled = false;
   });
 });
 
-// ✅ FETCH PRODUCTS
-function fetchAdminProducts() {
+/* ════════════════════════════════════════
+   FETCH PRODUCTS — YOUR ORIGINAL LOGIC
+════════════════════════════════════════ */
+function fetchAdminProducts(){
   const container = document.getElementById("adminProducts");
-  
+  container.innerHTML = `
+    <div class="state-box state-loading">
+      <span class="state-icon">⏳</span>
+      Fetching inventory data...
+    </div>
+  `;
+
   fetch(adminUrl)
-    .then(res => res.json())
-    .then(data => {
-      container.innerHTML = "";
+  .then(res => res.json())
+  .then(data => {
+    container.innerHTML = "";
 
-      if(data.length === 0) {
-        container.innerHTML = '<div class="loading-text">Inventory is empty.</div>';
-        return;
-      }
+    /* Update count badge */
+    document.getElementById('invCount').textContent = data.length;
 
-      data.forEach((p, index) => {
-        container.innerHTML += `
-          <div class="product-row">
-            <div class="prod-info">
-              <span class="prod-name">${p.name}</span>
-              <span class="prod-price">₹${p.price}</span>
-            </div>
-            <button onclick="deleteProduct(${index + 2})" class="btn-delete">
-              Delete
-            </button>
-          </div>
-        `;
-      });
-    })
-    .catch(err => {
-      container.innerHTML = `<div class="loading-text" style="color:#ff4d4d;">Failed to load data.</div>`;
+    if(data.length === 0){
+      container.innerHTML = `
+        <div class="state-box">
+          <span class="state-icon">📭</span>
+          Inventory is empty
+        </div>
+      `;
+      return;
+    }
+
+    /* DocumentFragment — single DOM write for performance */
+    const frag = document.createDocumentFragment();
+
+    data.forEach((p, index) => {
+
+      /* Image or emoji fallback */
+      const imgHTML = p.image
+        ? `<img
+             class="prod-thumb"
+             src="${p.image}"
+             alt="${p.name}"
+             loading="lazy"
+             onerror="
+               this.style.display='none';
+               this.nextElementSibling.style.display='flex';
+             "
+           />
+           <div class="prod-thumb-fallback" style="display:none">🛍️</div>`
+        : `<div class="prod-thumb-fallback">🛍️</div>`;
+
+      const row = document.createElement('div');
+      row.className = 'product-row';
+      row.innerHTML = `
+
+        <!-- THUMBNAIL -->
+        <div class="prod-thumb-wrap">
+          ${imgHTML}
+        </div>
+
+        <!-- INFO -->
+        <div class="prod-info">
+          <span class="prod-name">${p.name}</span>
+          <span class="prod-price">₹${p.price}</span>
+          <span class="prod-category">${p.category || 'Uncategorized'}</span>
+        </div>
+
+        <!-- DELETE -->
+        <button
+          class="btn-delete"
+          onclick="deleteProduct(${index + 2})"
+        >
+          🗑 Delete
+        </button>
+
+      `;
+      frag.appendChild(row);
     });
+
+    container.appendChild(frag);
+  })
+  .catch(err => {
+    document.getElementById('invCount').textContent = '!';
+    container.innerHTML = `
+      <div class="state-box">
+        <span class="state-icon" style="color:#e94560">❌</span>
+        <span style="color:rgba(255,100,100,0.7)">
+          Failed to load inventory.<br>Check your connection.
+        </span>
+      </div>
+    `;
+    console.error(err);
+  });
 }
 
-// ✅ DELETE PRODUCT
-function deleteProduct(row) {
-  if (!confirm("⚠️ Are you sure you want to permanently delete this product?")) return;
+/* ════════════════════════════════════════
+   DELETE PRODUCT — YOUR ORIGINAL LOGIC
+════════════════════════════════════════ */
+function deleteProduct(row){
+  if(!confirm("⚠️ Delete this product permanently?")) return;
 
   fetch(`${adminUrl}?deleteRow=${row}`)
-    .then(res => res.text())
-    .then(msg => {
-      alert("🗑️ " + msg);
-      // Temporarily show loading text while fetching fresh data
-      document.getElementById("adminProducts").innerHTML = '<div class="loading-text">Updating inventory...</div>';
-      fetchAdminProducts();
-    });
+  .then(res => res.text())
+  .then(msg => {
+    alert("🗑️ " + msg);
+    fetchAdminProducts();
+  })
+  .catch(err => {
+    alert("❌ Error: " + err);
+  });
 }
 
-// Load products on page open
-fetchAdminProducts();
-</script>
+/* ════════════════════════════════════════
+   STARFIELD
+════════════════════════════════════════ */
+(function(){
+  const wrap = document.getElementById('starsWrap');
+  const frag = document.createDocumentFragment();
+  for(let i = 0; i < 100; i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() < 0.7 ? 1 : 2;
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      width:${size}px;
+      height:${size}px;
+      --dur:${2 + Math.random()*4}s;
+      --delay:-${Math.random()*5}s;
+      --bright:${0.3 + Math.random()*0.7};
+    `;
+    frag.appendChild(s);
+  }
+  wrap.appendChild(frag);
+})();
 
+/* Load on start */
+fetchAdminProducts();
+
+</script>
 </body>
 </html>
