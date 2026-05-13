@@ -1,36 +1,301 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════
+       ROOT & RESET
+    ═══════════════════════════════════════ */
+    :root {
+      --primary: #0f3460;
+      --accent: #e94560;
+      --bg: #07071a;
+      --glass: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(233,69,96,0.15), transparent 60%);
+      filter: blur(80px);
+      z-index: -1;
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px; right: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(15,52,96,0.3), transparent 60%);
+      filter: blur(80px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════
+       GLASS PANELS
+    ═══════════════════════════════════════ */
+    .glass-panel {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      animation: slideUp 0.6s ease-out both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-title {
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #fff, #a8c8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    /* ═══════════════════════════════════════
+       FORM INPUTS
+    ═══════════════════════════════════════ */
+    .input-group {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 16px 20px;
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      background: rgba(233, 69, 96, 0.05);
+      box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.1), 0 0 15px rgba(233, 69, 96, 0.2);
+    }
+
+    /* Price input specific grouping */
+    .price-group::before {
+      content: '₹';
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 600;
+      pointer-events: none;
+    }
+    .price-group .form-input {
+      padding-left: 40px;
+    }
+
+    /* ═══════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════ */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #e94560, #c62a47);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(233, 69, 96, 0.3);
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(233, 69, 96, 0.5);
+    }
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    /* ═══════════════════════════════════════
+       PRODUCT LIST DASHBOARD
+    ═══════════════════════════════════════ */
+    .product-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px 20px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .product-row:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(4px);
+    }
+
+    .prod-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .prod-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .prod-price {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .btn-delete {
+      background: rgba(255, 77, 77, 0.1);
+      color: #ff4d4d;
+      border: 1px solid rgba(255, 77, 77, 0.2);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-delete:hover {
+      background: #ff4d4d;
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+    }
+
+    /* Loading state */
+    .loading-text {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      padding: 20px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+  </style>
 </head>
+<body>
 
-<body style="font-family: Arial, sans-serif; max-width:500px; margin:auto; padding:20px;">
+<div class="container">
+  
+  <!-- ══ ADD PRODUCT FORM ══ -->
+  <div class="glass-panel" style="animation-delay: 0.1s;">
+    <h2 class="panel-title">Add New Product</h2>
+    
+    <form id="productForm">
+      <div class="input-group">
+        <input type="text" name="name" class="form-input" placeholder="Product Name" required>
+      </div>
+      
+      <div class="input-group">
+        <input type="text" name="description" class="form-input" placeholder="Short Description" required>
+      </div>
+      
+      <div class="input-group">
+        <input type="text" name="category" class="form-input" placeholder="Category (e.g. Premium, Standard)">
+      </div>
+      
+      <div class="input-group price-group">
+        <input type="number" name="price" class="form-input" placeholder="Price" required>
+      </div>
+      
+      <div class="input-group">
+        <input type="text" name="image" class="form-input" placeholder="Image URL (https://...)">
+      </div>
 
-<h2 style="text-align:center;">Add Product</h2>
+      <button type="submit" class="btn-submit" id="submitBtn">Deploy Product</button>
+    </form>
+  </div>
 
-<form id="productForm" style="margin-bottom:30px;">
-  <input type="text" name="name" placeholder="Product Name" required style="width:100%; padding:8px;"><br><br>
-  <input type="text" name="description" placeholder="Description" required style="width:100%; padding:8px;"><br><br>
-  <input type="text" name="category" placeholder="Category" style="width:100%; padding:8px;"><br><br>
-  <input type="number" name="price" placeholder="Price" required style="width:100%; padding:8px;"><br><br>
-  <input type="text" name="image" placeholder="Image URL" style="width:100%; padding:8px;"><br><br>
+  <!-- ══ INVENTORY DASHBOARD ══ -->
+  <div class="glass-panel" style="animation-delay: 0.2s;">
+    <h2 class="panel-title">Inventory Dashboard</h2>
+    <div id="adminProducts">
+      <div class="loading-text">Fetching inventory data...</div>
+    </div>
+  </div>
 
-  <button type="submit" style="width:100%; padding:10px; background:#28a745; color:white; border:none; border-radius:6px;">
-    Add Product
-  </button>
-</form>
-
-<hr>
-
-<h2 style="text-align:center;">Products Dashboard</h2>
-<div id="adminProducts"></div>
+</div>
 
 <script>
-const adminUrl = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec"; // ← PUT NEW EXEC URL HERE
+// Keep your exact backend URL
+const adminUrl = "https://script.google.com/macros/s/AKfycbywUwcl7CPB_e4LgTg23lAdZmkydLJ03KKYOXGiYeMpXNuHV1p3OpJNgd6ZrdaIxdceRA/exec";
 
 // ✅ ADD PRODUCT
 document.getElementById("productForm").addEventListener("submit", function(e) {
   e.preventDefault();
+  const submitBtn = document.getElementById("submitBtn");
+  const originalText = submitBtn.innerText;
+  
+  // Visual feedback during submission
+  submitBtn.innerText = "Deploying...";
+  submitBtn.style.opacity = "0.7";
+  submitBtn.style.pointerEvents = "none";
+
   const formData = new FormData(this);
 
   fetch(adminUrl, {
@@ -39,58 +304,64 @@ document.getElementById("productForm").addEventListener("submit", function(e) {
   })
   .then(res => res.text())
   .then(msg => {
-    alert(msg);
+    alert("✅ " + msg); // Adds a nice checkmark to your alert
     this.reset();
     fetchAdminProducts();
+  })
+  .catch(err => {
+    alert("❌ Error: " + err);
+  })
+  .finally(() => {
+    // Reset button state
+    submitBtn.innerText = originalText;
+    submitBtn.style.opacity = "1";
+    submitBtn.style.pointerEvents = "auto";
   });
 });
 
 // ✅ FETCH PRODUCTS
 function fetchAdminProducts() {
+  const container = document.getElementById("adminProducts");
+  
   fetch(adminUrl)
     .then(res => res.json())
     .then(data => {
-      const container = document.getElementById("adminProducts");
       container.innerHTML = "";
+
+      if(data.length === 0) {
+        container.innerHTML = '<div class="loading-text">Inventory is empty.</div>';
+        return;
+      }
 
       data.forEach((p, index) => {
         container.innerHTML += `
-          <div style="
-            border:1px solid #ddd;
-            padding:10px;
-            margin:8px 0;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            border-radius:8px;
-            background:#f9f9f9;">
-            
-            <span>${p.name} - ₹${p.price}</span>
-
-            <button onclick="deleteProduct(${index+2})"
-              style="
-                background:#ff4d4d;
-                color:white;
-                border:none;
-                padding:6px 12px;
-                border-radius:6px;
-                cursor:pointer;">
+          <div class="product-row">
+            <div class="prod-info">
+              <span class="prod-name">${p.name}</span>
+              <span class="prod-price">₹${p.price}</span>
+            </div>
+            <button onclick="deleteProduct(${index + 2})" class="btn-delete">
               Delete
             </button>
           </div>
         `;
       });
+    })
+    .catch(err => {
+      container.innerHTML = `<div class="loading-text" style="color:#ff4d4d;">Failed to load data.</div>`;
     });
 }
 
 // ✅ DELETE PRODUCT
 function deleteProduct(row) {
-  if (!confirm("Are you sure you want to delete this product?")) return;
+  if (!confirm("⚠️ Are you sure you want to permanently delete this product?")) return;
 
   fetch(`${adminUrl}?deleteRow=${row}`)
     .then(res => res.text())
     .then(msg => {
-      alert(msg);
+      alert("🗑️ " + msg);
+      // Temporarily show loading text while fetching fresh data
+      document.getElementById("adminProducts").innerHTML = '<div class="loading-text">Updating inventory...</div>';
       fetchAdminProducts();
     });
 }
